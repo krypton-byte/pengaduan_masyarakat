@@ -71,7 +71,7 @@ function cdate(){
  */
 function removeCardById(id){
     Array.from(document.getElementsByClassName('col-xxl-3'))
-        .filter(x=>x.getAttribute('id'))
+        .filter(x=>x.getAttribute('id') === `i${id}`)
             .map(x=>x.remove())
 }
 
@@ -125,7 +125,7 @@ function escapeHtml(unsafe)
         const split = tanggal.split(' ')[0].split('-')
         const tgl = tanggal.match('-')?`${split[2]}, ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`:tanggal;
       return `
-      <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6" id="i${id}">
+      <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6" id="i${id}" style="animation: fadeInDown;animation-duration: 1s;">
                     <div class="card items">
                         <div class="card-body">
                             <div class="items-img position-relative"><img src="${image_url}" id="img${id}" width="100%" class="img-fluid rounded mb-3" alt=""></div>
@@ -169,7 +169,7 @@ function setDetailsFromID(id_=''){
     document.getElementById('idpengaduan').value = id;
     document.getElementById('button1btn').innerHTML = '<i class="ri-delete-bin-line"></i>  Hapus';
     document.getElementById('button1btn').setAttribute('onclick', 'deletePengaduan();')
-    document.getElementById('tambahpengaduan').innerHTML='<a href="#" onclick="toTulisPengaduan();" class="btn btn-primary" style="width: 100%;"><i class="ri-add-circle-line"></i>  Buat Pengaduan</a>';
+    document.getElementById('tambahpengaduan').innerHTML='<a href="#" onclick="toTulisPengaduan();" class="btn btn-primary" style="width: 100%;" style="animation: backInRight;animation-duration: 1s;"><i class="ri-add-circle-line"></i>  Buat Pengaduan</a>';
     document.getElementById('isipengaduan').value = unescapeHtml(document.getElementById(`isi-${id}`).innerHTML.match(/<span.*?>/g)?/(.*?)<span id=.*?>[\.]+<\/span><span .*?>(.*?)<\/span>/.exec(document.getElementById(`isi-${id}`).innerHTML).slice(1, 3).join(''):document.getElementById(`isi-${id}`).innerHTML);
     window.scrollTo(0, 0);
     readOnlyPengaduan(id);
@@ -331,9 +331,8 @@ function buat_pengaduan()
  }).then(async (response) => {
      const json = await response.json();
      if(json.status !== false ){
-        document.getElementById('previewupload').removeAttribute('onclick');
-        document.getElementById('isipengaduan').setAttribute('readonly', '');
-        $('#pengaduan').append(createCard(json.foto, json.tgl, json.isi, json.status));
+        const card = createCard(json.foto, json.tgl, json.isi, json.status, json.id);
+        document.getElementById('pengaduan').childNodes[4]&&document.getElementById('pengaduan').childNodes[4].getAttribute?$(`#${document.getElementById('pengaduan').childNodes[4].getAttribute('id')}`).before(card):$('#pengaduan').append(card);
         Swal.fire({
            position: 'top-end',
            icon: 'success',
@@ -341,11 +340,12 @@ function buat_pengaduan()
            showConfirmButton: false,
            timer: 1500
        });
-       globalThis.allID.push(json.id)
+       globalThis.allID.push(json.id);
+       setDetailsFromID(json.id);
      }else{
         Swal.fire({
             position: 'top-end',
-            icon: 'success',
+            icon: 'error',
             title: 'Pengaduan Gagal dibuat',
             showConfirmButton: false,
             timer: 1500

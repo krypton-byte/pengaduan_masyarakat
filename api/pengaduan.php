@@ -10,11 +10,18 @@ if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
 if(isset($_POST['isi']) && isset($_FILES['image']))
 {
     $user = new Masyarakat($_SESSION['username'], $_SESSION['password']);
-    $img = uploadImageFromPath($_FILES['image']['tmp_name']);
-    if($img){
+    if( getimagesize($_FILES['image']['tmp_name'])/* $img */ ){
+        $img = uploadImageFromPath($_FILES['image']['tmp_name']);
+        // $nname = str_replace('.','',strval(microtime(true))).'.'.explode('/', mime_content_type($_FILES['image']['tmp_name']))[1];
+        // echo $nname;
+        // move_uploaded_file($_FILES['image']['tmp_name'], realpath(dirname(__FILE__).'/..').'/gambar-aduan/'.$nname);
+        // echo '{}';
         echo json_encode($user->buatPengaduan($_POST['isi'], $img), JSON_PRETTY_PRINT);
-    }else{
-        echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
+        exit();
     }
+    echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
+    exit();
 }
+echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
+exit();
 ?>

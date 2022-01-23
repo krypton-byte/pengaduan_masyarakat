@@ -65,7 +65,8 @@ include 'components/header.php';
         </div>
     </div>
 </div>
-
+<style>
+</style>
 <?php
 include 'components/footer.php';
 ?>

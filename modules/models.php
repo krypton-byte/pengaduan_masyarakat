@@ -140,7 +140,7 @@
 
         public function pengaduan(int $id)
         {
-            $query = $this->connection->prepare("SELECT nik,isi,foto,tgl FROM pengaduan WHERE nik = ? AND id = ?");
+            $query = $this->connection->prepare("SELECT nik,isi,foto,tgl FROM pengaduan WHERE nik = ? AND id = ? ORDER BY id DESC");
             $query->bind_param('si', $this->login(['nik'])['nik'], $id);
             $query->execute();
             return $query->get_result()->fetch_assoc();
@@ -148,15 +148,12 @@
 
         public function buatPengaduan(string $isi, string $foto)
         {
-            $query = $this->connection->prepare("INSERT INTO pengaduan (nik, isi, foto, status) VALUES (?, ?, ?, 'proses')");
+            $query = $this->connection->prepare("INSERT INTO pengaduan (nik, isi, foto, status) VALUES (?, ?, ?, '0')");
             $query->bind_param('sss', $this->login(["nik"])["nik"], $isi, $foto);
             $query->execute();
-            return [
-                "id" => $query->insert_id,
-                "isi" => $isi,
-                "foto" => $foto,
-                "status" => Status::proses
-            ];
+            $js = (new Pengaduan($query->insert_id))->get();
+            $js['id'] = $query->insert_id;
+            return $js;
         }
 
         public function semuaPengaduan(int $limit = 0, int $offset = 0, string $status = Status::null)
@@ -167,7 +164,7 @@
                 array_push($param, $status);
                 $param[0] = 's'.$param[0];
             }
-            $queryString = 'SELECT pengaduan.tgl, pengaduan.isi, pengaduan.foto, pengaduan.status, pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan WHERE nik = ?'.($status !== Status::null? ' AND status = ?':'').($limit?' LIMIT ? OFFSET ? ':'');
+            $queryString = 'SELECT pengaduan.tgl, pengaduan.isi, pengaduan.foto, pengaduan.status, pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan WHERE nik = ?'.($status !== Status::null? ' AND status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
             $query = $this->connection->prepare($queryString);
             $query->bind_param(...$param);
             $query->execute();
@@ -315,9 +312,52 @@
             parent::__construct();
         }
 
+        public function login(){
+
+        }
+
         public function daftar() {
 
-        }        
+        }
+
+        public function petugas() {
+
+        }
+
+        public function buat_laporan(){
+
+        }
+        public function jumlah_user(){
+            $query = $this->connection->prepare('SELECT COUNT(nik) FROM masyarakat');
+            $query->execute();
+            return $query->get_result()->fetch_assoc()['COUNT(nik)'];
+        }
+        public function jumlah_pengaduan(string $filter = Status::null){
+            $query = $this->connection->prepare('SELECT COUNT(id) FROM pengaduan'.($filter !== Status::null ?' WHERE status = ?':''));
+            if($filter !== Status::null){
+                $query->bind_param('s', $filter);
+            }
+            $query->execute();
+            return $query->get_result()->fetch_assoc()['COUNT(id)'];
+        }
+        public function semua_pengaduan(int $limit = 5, int $offset = 0, string $status = Status::null){
+            $param = $limit?array('ii', $limit, $offset):array();
+            if($status!==Status::null)
+            {
+                if(!$param){
+                    array_push($param, 's', $status);
+                }else{
+                    $param[0] = 's'.$param[0];
+                    array_push($param, $status);
+                }
+            }
+            $queryString = 'SELECT pengaduan.tgl, pengaduan.isi, pengaduan.foto, pengaduan.status, pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan '.($status !== Status::null? ' WHERE status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
+            $query = $this->connection->prepare($queryString);
+            $param && $query->bind_param(...$param);
+            $query->execute();
+            return $query->get_result()->fetch_all(MYSQLI_ASSOC);
+      
+        }
 
     }
 ?>
