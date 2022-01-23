@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <html lang="en">
   <!-- Mirrored from enftx-html.vercel.app/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Jan 2022 08:03:48 GMT --><!-- Added by HTTrack --><head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -76,28 +80,10 @@
     <script src="../vendor/chartjs/chart.bundle.min.js"></script>
     <script src="../js/scripts.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script>
     <div id="preloader" style="display: none"><i>.</i><i>.</i><i>.</i></div>
     <div id="main-wrapper" class="show">
       <div class="header">
         <div class="container">
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Tanggapan</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <textarea style="width: 100%; height: 373px; margin-top: 0px; margin-bottom: 0px;" class="form-control" id="tanggapan"></textarea>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                  <button type="button" class="btn btn-primary">Tanggapi</button>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="row">
             <div class="col-xxl-12">
               <div class="header-content">
@@ -211,27 +197,12 @@
                             <img src="../images/profile/3.png" alt="" />
                           </span>
                           <div class="user-info">
-                            <h5>Petugas</h5>
-                            <span>Masyarakat</span>
+                            <h5><?php echo $_SESSION["nama"]?></h5>
+                            <span><?php echo $_SESSION["level"]?></span>
                           </div>
                         </div>
                       </div>
-                      <a class="dropdown-item" href="profile.html">
-                        <span><i class="ri-user-line"></i></span>Profile
-                      </a>
-                      <a class="dropdown-item" href="wallet.html">
-                        <span><i class="ri-wallet-line"></i></span>Wallet
-                      </a>
-                      <a class="dropdown-item" href="settings-profile.html">
-                        <span><i class="ri-settings-3-line"></i></span>Settings
-                      </a>
-                      <a class="dropdown-item" href="settings-activity.html">
-                        <span><i class="ri-time-line"></i></span>Activity
-                      </a>
-                      <a class="dropdown-item" href="lock.html">
-                        <span><i class="ri-lock-line"></i></span>Lock
-                      </a>
-                      <a class="dropdown-item logout" href="logout.php">
+                      <a class="dropdown-item logout" href="../logout.php">
                         <i class="ri-logout-circle-line"></i>Logout
                       </a>
                     </div>
@@ -250,28 +221,35 @@
         </div>
         <div class="menu">
           <ul class="show">
-            <li class="active">
-              <a href="index-2.html" class="active">
+            <li>
+              <a href="index.php">
                 <span><i class="ri-bar-chart-box-line"></i></span>
-                <span class="nav-text">Dashboard</span>
+                <span class="nav-text">Statistik</span>
               </a>
             </li>
             <li class="">
-              <a href="http://">
+              <a href="pengaduan.php">
                 <span><i class="ri-chat-4-line"></i></span>
                 <span class="nav-text">Pengaduan</span>
               </a>
             </li>
-            <li>
-              <a href="http://">
-                <span><i class="ri-printer-line"></i></span>
-                <span class="nav-text">Cetak</span>
-              </a>
-            </li>
-            <li>
-              <a href="http://"><span><i class="ri-user-add-line"></i></span>
-            <span class="nav-text">Petugas</span></a>
-            </li>
+            <?php
+            if($_SESSION['level'] === 'admin'){
+            ?>
+              <li>
+                <a href="import.php">
+                  <span><i class="ri-printer-line"></i></span>
+                  <span class="nav-text">Cetak</span>
+                </a>
+              </li>
+              <li>
+                <a href="tambahuser.php"><span><i class="ri-user-add-line"></i></span>
+              <span class="nav-text">Petugas</span></a>
+              </li>
+            <?php
+            }
+            ?>
+
           </ul>
         </div>
       </div>

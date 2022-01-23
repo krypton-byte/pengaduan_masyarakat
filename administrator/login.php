@@ -20,7 +20,7 @@
 
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.png">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="@@dashboard">
@@ -29,18 +29,18 @@
 <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
 <?php
     if(isset($_POST['username']) && isset($_POST['password'])) {
-        require 'modules/models.php';
+        require '../modules/models.php';
         echo '<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script><script>$(document).ready(()=>{';
         try
         {
             $uname = $_POST['username']?$_POST['username']:$_SESSION['username'];
             $passwd = $_POST['password']?$_POST['password']:$_SESSION['password'];
-            $user = (new Masyarakat($uname, $passwd))->login();
+            $user = (new Petugas($uname, $passwd))->login();
             $_SESSION['username'] = $_POST['username'];
             $_SESSION['password'] = $_POST['password'];
             $_SESSION['nama'] = $user['nama'];
-            $_SESSION['level'] = 'user';
-            header('Location: dashboard.php');
+            $_SESSION['level'] = $user["level"];
+            header('Location: index.php');
             echo 'Swal.fire({
                 position: \'top-end\',
                 icon: \'success\',
@@ -59,7 +59,7 @@
         }
         echo '})</script>';
     }else if(isset($_SESSION['username']) && isset($_SESSION['password'])){
-        header('Location: dashboard.php');
+        header('Location: index.php');
     }
 ?>
 <div class="authincation section-padding">

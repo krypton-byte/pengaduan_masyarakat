@@ -46,6 +46,7 @@ if(isset($_POST['nik']) && isset($_POST['username']) && $_POST['password'] && $_
                     <div class="card-body">
                         <form action="#" method="POST">
                             <div class="row">
+                            <div class="col-12 mb-3"><label class="form-label">Avatar</label></div>
                                 <div class="col-12 mb-3"><label class="form-label">Nik</label><input name="nik" type="text" class="form-control" value="<?php echo isset($_POST['nik'])?$_POST['nik']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Nama</label><input name="nama" type="text" class="form-control" value="<?php echo isset($_POST['nama'])?$_POST['nama']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username" type="text" class="form-control" value="<?php echo isset($_POST['username'])?$_POST['username']:'';?>"></div>

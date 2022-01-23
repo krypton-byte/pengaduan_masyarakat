@@ -208,11 +208,11 @@
             return true;
         }
 
-        public function login(array $fields = array("nama","username","telp"))
+        public function login(array $fields = array("nama","username","telp","level"))
         {
             $sfield = join(',', $fields);
-            $query = $this->connection->prepare("SELECT {$sfield} FROM petugas WHERE username =?");
-            $query->bind_param('ss', $this->username);
+            $query = $this->connection->prepare("SELECT {$sfield},password FROM petugas WHERE username =?");
+            $query->bind_param('s', $this->username);
             $query->execute();
             $result = $query->get_result()->fetch_assoc();
             if($result and password_verify($this->password, $result['password']))
@@ -229,6 +229,39 @@
             $query->bind_param('isi', $id_pengaduan, $tanggapan, $this->login()['id']);
             $query->execute();
             return true;
+        }
+        public function jumlah_user(){
+            $query = $this->connection->prepare('SELECT COUNT(nik) FROM masyarakat');
+            $query->execute();
+            return $query->get_result()->fetch_assoc()['COUNT(nik)'];
+        }
+        public function jumlah_pengaduan(string $filter = Status::null){
+            $query = $this->connection->prepare('SELECT COUNT(id) FROM pengaduan'.($filter !== Status::null ?' WHERE status = ?':''));
+            if($filter !== Status::null){
+                $query->bind_param('s', $filter);
+            }
+            $query->execute();
+            return $query->get_result()->fetch_assoc()['COUNT(id)'];
+        }
+        public function semua_pengaduan(int $limit = 5, int $offset = 0, string $status = Status::null){
+            $param = $limit?array('ii', $limit, $offset):array();
+            if($status!==Status::null)
+            {
+                if(!$param){
+                    array_push($param, 's', $status);
+                }else{
+                    $param[0] = 's'.$param[0];
+                    array_push($param, $param[2]);
+                    $param[2] = $param[1];
+                    $param[1] = $status;
+                }
+            }
+            $queryString = 'SELECT masyarakat.nama, pengaduan.tgl,pengaduan.isi,pengaduan.foto,pengaduan.status,pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan RIGHT JOIN masyarakat ON masyarakat.nik = pengaduan.nik'.($status!== Status::null?' WHERE  status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
+            $query = $this->connection->prepare($queryString);
+            $param && $query->bind_param(...$param);
+            $query->execute();
+            return $query->get_result()->fetch_all(MYSQLI_ASSOC);
+      
         }
     }
 
@@ -289,6 +322,13 @@
             throw new pengaduanTidakDitemukan("id_pengaduan: {$this->id_pengaduan} Tidak ditemukan", $this->id_pengaduan);
         }
 
+        public function getfullinfo(){
+            $query = $this->connection->prepare('SELECT pengaduan.tgl, pengaduan.isi, pengaduan.foto, pengaduan.status, pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan WHERE pengaduan.id = ?');
+            $query->bind_param('s', $this->id_pengaduan);
+            $query->execute();
+            return $query->get_result()->fetch_assoc();
+        }
+
         public function user()
         {
             $query = $this->connection->prepare('SELECT nik,nama,username,telp FROM masyarakat WHERE nik=?');
@@ -304,6 +344,7 @@
             $query->execute();
             return $query->affected_rows;
         }
+        
 
 
     }
@@ -316,7 +357,7 @@
 
         }
 
-        public function daftar() {
+        public function daftar(string $nama, string $telp) {
 
         }
 
@@ -326,37 +367,6 @@
 
         public function buat_laporan(){
 
-        }
-        public function jumlah_user(){
-            $query = $this->connection->prepare('SELECT COUNT(nik) FROM masyarakat');
-            $query->execute();
-            return $query->get_result()->fetch_assoc()['COUNT(nik)'];
-        }
-        public function jumlah_pengaduan(string $filter = Status::null){
-            $query = $this->connection->prepare('SELECT COUNT(id) FROM pengaduan'.($filter !== Status::null ?' WHERE status = ?':''));
-            if($filter !== Status::null){
-                $query->bind_param('s', $filter);
-            }
-            $query->execute();
-            return $query->get_result()->fetch_assoc()['COUNT(id)'];
-        }
-        public function semua_pengaduan(int $limit = 5, int $offset = 0, string $status = Status::null){
-            $param = $limit?array('ii', $limit, $offset):array();
-            if($status!==Status::null)
-            {
-                if(!$param){
-                    array_push($param, 's', $status);
-                }else{
-                    $param[0] = 's'.$param[0];
-                    array_push($param, $status);
-                }
-            }
-            $queryString = 'SELECT pengaduan.tgl, pengaduan.isi, pengaduan.foto, pengaduan.status, pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan '.($status !== Status::null? ' WHERE status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
-            $query = $this->connection->prepare($queryString);
-            $param && $query->bind_param(...$param);
-            $query->execute();
-            return $query->get_result()->fetch_all(MYSQLI_ASSOC);
-      
         }
 
     }

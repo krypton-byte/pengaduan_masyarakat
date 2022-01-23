@@ -1,6 +1,4 @@
 <?php
-    require 'modules/models.php';
-    $db = new Connection();
-    $y = $db->connection->query('SELECT * FROM petugas')->fetch_array(MYSQLI_ASSOC);
-    echo $y['nama'];
+session_start();
+echo json_encode($_SESSION, JSON_PRETTY_PRINT);
 ?>

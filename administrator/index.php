@@ -1,7 +1,7 @@
 <?php
   include 'components/header.php';
 ?>
-
+<script src="js/script.js"></script>
 <div class="container">
   <div class="row">
     <div class="col-xxl-3 col-xl-12">
@@ -80,26 +80,6 @@
           </div>
         </div>
 
-    <!-- <div class="col-12">
-      <div class="card" style="height: 200 px;">
-          <div class="card-body">
-            <div class="row">
-              <div class="d-flex col-xl-1 col-sm-2 my-auto justify-content-md-center">
-                <h5>Filter</h5>
-              </div>
-              <div class="d-flex col-xl-11 col-sm-10">
-                <select class="form-select"">
-                  <option value="all" selected>Semua</option>
-                  <option value="0">0</option>
-                  <option value="proses">Proses</option>
-                  <option value="selesai">Selesai</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    <div class="col-xxl-6 col-xl-8 col-lg-6"></div> -->
       <div class="row" id="pengaduan">
       </div>
     <div class="col-xxl-4 col-xl-12"></div>
