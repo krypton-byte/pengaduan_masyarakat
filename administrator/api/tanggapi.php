@@ -8,10 +8,15 @@ if(!(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_POS
 }
 try{
     $petugas = new Petugas($_SESSION['username'], $_SESSION['password']);
-    $petugas->tanggapi(intval($_POST['id']), $_POST['tanggapan']);
+    $infoPetugas = $petugas->login(['id']);
+    $pengaduan = new Pengaduan(intval($_POST['id']));
+    if($infoPetugas && $pengaduan->tanggapi($_POST['tanggapan'], $infoPetugas['id'])){
+        echo json_encode(['status' => true, "data" => $pengaduan->getfullinfo()]);
+        exit();
+    }
     echo json_encode((new Pengaduan($_POST['id']))->getfullinfo(), JSON_PRETTY_PRINT);
-    exit();
 }catch(userDoesNotExist){
+    echo 'user';
     echo json_encode(['status' => false], JSON_PRETTY_PRINT);
     exit();
 }

@@ -1,5 +1,18 @@
 <?php
   session_start();
+  $_SESSION['position'] = 'administrator';
+  if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
+    header('location: ../logout.php');
+    exit();
+  }
+  require '../modules/models.php';
+  $petugas = new Petugas($_SESSION['username'], $_SESSION['password']);
+  try{
+    $info = $petugas->login();
+  }catch(userDoesNotExist){
+    header('location: ../logout.php');
+    exit();
+  }
 ?>
 
 <html lang="en">
@@ -80,6 +93,7 @@
     <script src="../vendor/chartjs/chart.bundle.min.js"></script>
     <script src="../js/scripts.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <div id="preloader" style="display: none"><i>.</i><i>.</i><i>.</i></div>
     <div id="main-wrapper" class="show">
       <div class="header">
@@ -197,8 +211,8 @@
                             <img src="../images/profile/3.png" alt="" />
                           </span>
                           <div class="user-info">
-                            <h5><?php echo $_SESSION["nama"]?></h5>
-                            <span><?php echo $_SESSION["level"]?></span>
+                            <h5><?php echo $info['nama']?></h5>
+                            <span><?php echo $info["level"]?></span>
                           </div>
                         </div>
                       </div>
@@ -234,7 +248,7 @@
               </a>
             </li>
             <?php
-            if($_SESSION['level'] === 'admin'){
+            if($info['level'] === 'admin'){
             ?>
               <li>
                 <a href="import.php">

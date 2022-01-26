@@ -1,6 +1,9 @@
 <?php
+  session_start();
   include 'components/header.php';
+  
 ?>
+
 <script src="js/script.js"></script>
 <div class="container">
   <div class="row">

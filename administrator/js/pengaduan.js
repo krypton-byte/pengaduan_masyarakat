@@ -11,16 +11,17 @@ var dataPengaduan = {};
 }
 
 function lihatTanggapan(id){
-    document.getElementById('isiTanggapan').style.height = document.getElementById('isiAduan').style.height
-    document.getElementById('isiTanggapan').value = dataPengaduan[id].tanggapan;
+    document.getElementById('isiTanggapan').value = dataPengaduan[id].tanggapan || '';
     document.getElementById('isiTanggapan').style.display = ''
+    document.getElementById('isiAduan').style.display = 'none'
+    document.getElementById('isiTanggapan').setAttribute('readonly', '')
     const btn1 = document.getElementById('btn1');
     const btn2 = document.getElementById('btn2');
     btn1.removeAttribute('data-bs-dismiss');
     btn1.innerHTML = 'Kembali';
     btn1.setAttribute('onclick', `lihatPengaduan(${id})`);
     btn2.innerHTML = 'Selesai';
-    btn2.setAttribute('onclick', 'alert("berhasil")');
+    btn2.setAttribute('onclick', `selesai(${id});`);
 }
 
 
@@ -33,7 +34,7 @@ function tulisTanggapan(ids){
     btn1.innerHTML = 'Kembali';
     btn1.setAttribute('onclick', `lihatPengaduan(${ids})`);
     btn2.innerHTML = 'Kirim';
-    btn2.setAttribute('onclick', 'alert("terkirim")');
+    btn2.setAttribute('onclick', `kirimTanggapan(${ids})`);
 }
 
 /**
@@ -48,8 +49,11 @@ function lihatPengaduan(id){
     const btn1 = document.getElementById('btn1')
     const btn2 = document.getElementById('btn2');
     if(dataPengaduan[id].status === 'proses'){
-        btn1.innerHTML = 'Tutup'
+        btn1.setAttribute('data-bs-dismiss','modal');
+        btn1.removeAttribute('onclick');
+        btn1.innerHTML = 'Tutup';
         btn2.innerHTML = 'Tanggapan'
+        btn2.setAttribute('onclick', `lihatTanggapan(${id})`);
     }else if(dataPengaduan[id].status === 'selesai'){
         btn1.setAttribute('data-bs-dismiss','modal');
         btn1.removeAttribute('onclick');
@@ -71,15 +75,19 @@ function btnTanggapan(id){
 }
 
 function kirimTanggapan(id){
-    const isi = document.getElementById('isiAduan').value
+    const isi = document.getElementById('isiTanggapan').value
     const form = new FormData();
     form.append('id', id);
-    form.append('isi', isi);
+    form.append('tanggapan', isi);
     fetch('api/tanggapi.php', {
         method:'POST',
+        body: form
     }).then(async (resp)=>{
-        if((await resp.json()).status){
-            dataPengaduan[id] = 
+        const json = await resp.json();
+        if(json.status !== false){
+            document.getElementById('isiTanggapan').value = '';
+            dataPengaduan[id] = json.data;
+            EditStatusByID(id, json.data.status);
         }
     })
     
@@ -94,8 +102,33 @@ function Hapus(){
 
 }
 
-function selesai(){
+function selesai(id){
+    const form = new FormData();
+    form.append('id', id);
+    fetch('api/selesai.php', {
+        method: 'POST',
+        body: form
+    }).then(async (response)=>{
+        if((await response.json()).status){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Berhasil',
+                showConfirmButton: false,
+                timer: 2000
+            })
 
+        }else{
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Gagal',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+        }
+    })
 }
 
 
@@ -152,7 +185,7 @@ function escapeHtml(unsafe)
       <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12 d-xs-flex justify-content-center" id="i${id}" style="animation: fadeInDown;animation-duration: 1s;">
                     <div class="card items">
                         <div class="card-body">
-                            <div class="items-img position-relative"><img src="${image_url}" width="100%" class="img-fluid rounded mb-3" alt=""><img src="${avatar}" class="creator" width="50" alt=""></div>
+                            <div class="items-img position-relative"><img src="../gambar-aduan/${image_url}" width="100%" class="img-fluid rounded mb-3" alt=""><img src="${avatar}" class="creator" width="50" alt=""></div>
                             <h4 class="card-title">${author}</h4>
                             <p>${isi.length > 29 ?buatSelengkapnya(isi, id):isi}</p>
                             <div class="d-flex justify-content-between">
@@ -161,7 +194,7 @@ function escapeHtml(unsafe)
                                     <h5 class="text-muted">${tgl}</h5>
                                 </div>
                                 <div class="text-end">
-                                    <p class="mb-2">Status : <strong class="text-primary"">${status}</strong></p>
+                                    <p class="mb-2">Status : <strong class="text-primary" id="status-${id}">${status}</strong></p>
                                 </div>
                             </div>
                              <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="btnTanggapan(${id});">
@@ -173,6 +206,10 @@ function escapeHtml(unsafe)
                     </div>
                 </div>
       `
+  }
+
+  function EditStatusByID(id, status){
+        document.getElementById(`status-${id}`).innerText = status;
   }
 
 /**
@@ -187,6 +224,7 @@ function monthNum2Str(num){
     ];
     return month[num]
 }
+
 
 $(document).ready(()=>{
     var status = '';

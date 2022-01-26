@@ -18,6 +18,18 @@
         }
     }
 
+    class PenguaduanTelahDitanggapi extends Exception
+    {
+        public function __construct(string $message, int $code, Throwable $previous = null) {
+            parent::__construct($message, $code, $previous);
+        }
+
+        public function __toString(): string
+        {
+            return __CLASS__.":[{$this->code}]: {$this->message}\n";
+        }
+    }
+
     class userDoesNotExist extends Exception
     {
         public function __construct(string $message, int $code, Throwable $previous = null) {
@@ -80,13 +92,13 @@
 
     class Connection
     {
-        private string $host = '127.0.0.1';
-        private string $username = 'root';
-        private string $password = '';
-        private string $database = 'pengaduan_masyarakat';
+        protected string $host = '127.0.0.1';
+        protected string $username_mysql = 'root';
+        protected string $password_mysql = '';
+        protected string $database = 'pengaduan_masyarakat1';
         public function __construct()
         {
-            $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
+            $this->connection = new mysqli($this->host, $this->username_mysql, $this->password_mysql, $this->database);
         }
 
     }
@@ -121,7 +133,7 @@
             }
         }
 
-        public function login(array $fields = array("nik","nama","username","telp"))
+        public function login(array $fields = array("nik","nama","username","telp")): array
         {
             $sfield = join(',', $fields);
             $query = $this->connection->prepare("SELECT {$sfield},password FROM masyarakat WHERE username =?");
@@ -138,7 +150,7 @@
 
         }
 
-        public function pengaduan(int $id)
+        public function pengaduan(int $id): array
         {
             $query = $this->connection->prepare("SELECT nik,isi,foto,tgl FROM pengaduan WHERE nik = ? AND id = ? ORDER BY id DESC");
             $query->bind_param('si', $this->login(['nik'])['nik'], $id);
@@ -146,7 +158,7 @@
             return $query->get_result()->fetch_assoc();
         }
 
-        public function buatPengaduan(string $isi, string $foto)
+        public function buatPengaduan(string $isi, string $foto): array
         {
             $query = $this->connection->prepare("INSERT INTO pengaduan (nik, isi, foto, status) VALUES (?, ?, ?, '0')");
             $query->bind_param('sss', $this->login(["nik"])["nik"], $isi, $foto);
@@ -156,7 +168,7 @@
             return $js;
         }
 
-        public function semuaPengaduan(int $limit = 0, int $offset = 0, string $status = Status::null)
+        public function semuaPengaduan(int $limit = 0, int $offset = 0, string $status = Status::null): array
         {
             $param = $limit?array('sii', $this->login()['nik'], $limit, $offset):array('s', $this->login()['nik']);
             if($status!==Status::null)
@@ -187,6 +199,10 @@
     }
 
     class Petugas extends Connection {
+
+        private string $username;
+        private string $password;
+    
         public function __construct($username, $password)
         {
             parent::__construct();
@@ -194,7 +210,7 @@
             $this->password = $password;
         }
 
-        public function daftar(string $nama, string $telp, string $level = 'admin')
+        public function daftar(string $nama, string $telp, string $level = 'admin'): bool
         {
             $uname = $this->connection->prepare("SELECT username FROM petugas WHERE username = ?");
             $uname->bind_param('s', $this->username);
@@ -204,11 +220,10 @@
             $query = $this->connection->prepare("INSERT INTO petugas (nama, username, password, telp, level) VALUES (?, ?, ?, ?, ?)");
             $query->bind_param('sssss', $nama, $this->username, $pass, $telp, $level);
             $query->execute();
-            var_dump($query);
-            return true;
+            return !$query->errno;
         }
 
-        public function login(array $fields = array("nama","username","telp","level"))
+        public function login(array $fields = array("nama","username","telp","level")): array
         {
             $sfield = join(',', $fields);
             $query = $this->connection->prepare("SELECT {$sfield},password FROM petugas WHERE username =?");
@@ -222,14 +237,6 @@
             throw new userDoesNotExist('user tidak ditemukan', 1);
         }
 
-
-        public function tanggapi(int $id_pengaduan, string $tanggapan)
-        {
-            $query = $this->connection->prepare("INSERT INTO tanggapan (id_pengaduan,tanggapan,id_petugas) VALUES(?,?,?)");
-            $query->bind_param('isi', $id_pengaduan, $tanggapan, $this->login()['id']);
-            $query->execute();
-            return true;
-        }
         public function jumlah_user(){
             $query = $this->connection->prepare('SELECT COUNT(nik) FROM masyarakat');
             $query->execute();
@@ -275,11 +282,15 @@
             
         }
 
-        public function ubahStatus(Status $status = Status::proses)
+        public function ubahStatus(string $status = Status::proses): bool
         {
-
+            $query = $this->connection->prepare('UPDATE pengaduan SET status = ? WHERE id = ?');
+            $query->bind_param('si', $status, $this->id_pengaduan);
+            $query->execute();
+            return !$query->errno;
         }
-        public function update(string $isi,string $impath='')
+
+        public function update(string $isi,string $impath=''): int
         {
             $queryString = 'UPDATE pengaduan SET isi = ?'.($impath?', foto = ?':'').' WHERE id = ?';
             $param = array('s', $isi);
@@ -296,14 +307,20 @@
             $query->execute();
             return $query->affected_rows;
         }
-        public function buat_tanggapan(string $tanggapan, int $id_petugas)
+
+        public function tanggapi(string $tanggapan, int $id_petugas): bool
         {
+            $query1= $this->connection->prepare('SELECT COUNT(id) FROM tanggapan WHERE id_pengaduan = ?');
+            $query1->bind_param('i', $this->id_pengaduan);
+            $query1->execute();
+            if($query1->get_result()->fetch_assoc()['COUNT(id)']) throw new PenguaduanTelahDitanggapi('Hanya bisa 1 tanggapan', 1);
             $query = $this->connection->prepare('INSERT INTO tanggapan (id_pengaduan,tanggapan,id_petugas) VALUES (?,?,?)');
             $query->bind_param('isi', $this->id_pengaduan, $tanggapan, $id_petugas);
             $query->execute();
+            return $this->ubahStatus();
         }
 
-        public function semua_tanggapan(int $timestamp = 0)
+        public function semua_tanggapan(int $timestamp = 0): array
         {
             $query = $this->connection->prepare('SELECT tgl,tanggapan,id_petugas FROM tanggapan WHERE  id_pengaduan =? AND tgl > ?');
             $query->bind_param('ii', $this->id_pengaduan, $timestamp);
@@ -311,7 +328,7 @@
             return $query->get_result()->fetch_all(MYSQLI_ASSOC);
         }
 
-        public function get(array $fields = array('tgl', 'nik', 'isi', 'foto', 'status'))
+        public function get(array $fields = array('tgl', 'nik', 'isi', 'foto', 'status')): array
         {
             $sfield = join(',', $fields);
             $query = $this->connection->prepare("SELECT {$sfield} FROM pengaduan WHERE id =?");
@@ -322,14 +339,15 @@
             throw new pengaduanTidakDitemukan("id_pengaduan: {$this->id_pengaduan} Tidak ditemukan", $this->id_pengaduan);
         }
 
-        public function getfullinfo(){
+        public function getfullinfo(): array
+        {
             $query = $this->connection->prepare('SELECT pengaduan.tgl, pengaduan.isi, pengaduan.foto, pengaduan.status, pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan WHERE pengaduan.id = ?');
             $query->bind_param('s', $this->id_pengaduan);
             $query->execute();
             return $query->get_result()->fetch_assoc();
         }
 
-        public function user()
+        public function user(): array
         {
             $query = $this->connection->prepare('SELECT nik,nama,username,telp FROM masyarakat WHERE nik=?');
             $query->bind_param('s', $this->get(['nik'])['nik']);
@@ -337,8 +355,13 @@
             return $query->get_result()->fetch_assoc();
         }
 
-        public function delete()
+        public function delete(): int
         {
+            $image = $this->connection->prepare('SELECT foto FROM WHERE id = ?');
+            $image->bind_params('i', $this->id_pengaduan);
+            $image->execute();
+            $data = $image->get_result()->fetch_assoc();
+            if($data) unlink('../gambar-aduan/'.$data['foto']);
             $query = $this->connection->prepare('DELETE FROM pengaduan WHERE id = ?');
             $query->bind_param('i', $this->id_pengaduan);
             $query->execute();
@@ -348,26 +371,5 @@
 
 
     }
-    class Administrator extends Connection {
-        public function __construct(string $username, string $password) {
-            parent::__construct();
-        }
 
-        public function login(){
-
-        }
-
-        public function daftar(string $nama, string $telp) {
-
-        }
-
-        public function petugas() {
-
-        }
-
-        public function buat_laporan(){
-
-        }
-
-    }
 ?>

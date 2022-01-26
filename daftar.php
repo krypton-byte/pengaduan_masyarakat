@@ -35,6 +35,54 @@ if(isset($_POST['nik']) && isset($_POST['username']) && $_POST['password'] && $_
 }
 
 ?>
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <div class="row d-flex justify-content-center">
+            <div class="col-5 my-2 col-sm-4">
+                <img src="images/avatar/avt-1.jpg" alt="" srcset="">
+            </div>
+            <div class="col-5 col-sm-4 my-2 mr-3">
+                <img src="images/avatar/avt-2.jpg" alt="" srcset="">
+            </div>
+            <div class="col-5 col-sm-4 my-2">
+                <img src="images/avatar/avt-3.jpg" alt="" srcset="">
+            </div>
+            <div class="col-5 col-sm-4 my-2 mr-3">
+                <img src="images/avatar/avt-4.jpg" alt="" srcset="">
+            </div>
+            <div class="col-5 col-sm-4 my-2">
+                <img src="images/avatar/avt-5.jpg" alt="" srcset="">
+            </div>
+            <div class="col-5 col-sm-4 my-2 mr-3">
+                <img src="images/avatar/avt-6.jpg" alt="" srcset="">
+            </div>
+        </div>
+      <div class="container-fluid">
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+    .row img {
+        background-color: blue;
+        border-radius: 20%;
+    }
+</style>
 <div class="authincation section-padding">
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
@@ -46,12 +94,14 @@ if(isset($_POST['nik']) && isset($_POST['username']) && $_POST['password'] && $_
                     <div class="card-body">
                         <form action="#" method="POST">
                             <div class="row">
-                            <div class="col-12 mb-3"><label class="form-label">Avatar</label></div>
                                 <div class="col-12 mb-3"><label class="form-label">Nik</label><input name="nik" type="text" class="form-control" value="<?php echo isset($_POST['nik'])?$_POST['nik']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Nama</label><input name="nama" type="text" class="form-control" value="<?php echo isset($_POST['nama'])?$_POST['nama']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username" type="text" class="form-control" value="<?php echo isset($_POST['username'])?$_POST['username']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Telp</label><input name="telp" type="text" class="form-control" value="<?php echo isset($_POST['telp'])?$_POST['telp']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Password</label><input name="password" type="password" class="form-control" value="<?php echo isset($_POST['password'])?$_POST['password']:'';?>"></div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Avatar</label><button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal"">Ubah</button>
+                                </div>
                             </div>
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
                                     Up</button></div>

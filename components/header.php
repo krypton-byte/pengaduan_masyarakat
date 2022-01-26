@@ -1,9 +1,17 @@
 <?php
 session_start();
-    if(!isset($_SESSION['nama'])){
-        header('Location: login.php');
+$_SESSION['position'] = 'masyarakat';
+require 'modules/models.php';
+try{
+    if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
+        header('location: ../logout.php');
         exit();
     }
+    $masyarakat = new Masyarakat($_SESSION['username'], $_SESSION['password']);
+    $info = $masyarakat->login();
+}catch(userDoesNotExist){
+    header('location: logout.php');
+}
     ?>
 <html lang="en"><!-- Mirrored from enftx-html.vercel.app/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Jan 2022 08:03:48 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
 

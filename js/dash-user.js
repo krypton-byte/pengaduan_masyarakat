@@ -128,7 +128,7 @@ function escapeHtml(unsafe)
       <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6" id="i${id}" style="animation: fadeInDown;animation-duration: 1s;">
                     <div class="card items">
                         <div class="card-body">
-                            <div class="items-img position-relative"><img src="${image_url}" id="img${id}" width="100%" class="img-fluid rounded mb-3" alt=""></div>
+                            <div class="items-img position-relative"><img src="gambar-aduan/${image_url}" id="img${id}" width="100%" class="img-fluid rounded mb-3" alt=""></div>
                             <h4 class="card-title"></h4>
                             <p id="isi-${id}">${isi.length > 29 ?buatSelengkapnya(isi, id):isi}</p>
                             <div class="d-flex justify-content-between">
