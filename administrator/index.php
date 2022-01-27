@@ -7,7 +7,7 @@
 <script src="js/script.js"></script>
 <div class="container">
   <div class="row">
-    <div class="col-xxl-3 col-xl-12">
+    <div class="col-xl-12">
       <div class="card m-0">
         <div class="card-body bs-0 bg-transparent p-0">
           <div class="row">
@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xxl-3 col-xl-12">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header">
           Graph
@@ -82,10 +82,7 @@
             </div>
           </div>
         </div>
-
-      <div class="row" id="pengaduan">
-      </div>
-    <div class="col-xxl-4 col-xl-12"></div>
+    </div>
   </div>
 </div>
 

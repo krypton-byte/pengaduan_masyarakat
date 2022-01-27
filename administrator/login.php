@@ -66,8 +66,8 @@
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
             <div class="col-xl-5 col-md-6">
-                <div class="mini-logo text-center my-4"><a href="index-2.html"><img src="images/logo.png" alt=""></a>
-                    <h4 class="card-title mt-5">Sign in to ENFTX</h4>
+                <div class="mini-logo text-center my-4"><a href="index-2.html"><img src="../images/logoi.png" width="150px" alt=""></a>
+                    <h4 class="card-title mt-5">Administrator</h4>
                 </div>
                 <div class="auth-form card">
                     <div class="card-body">
@@ -77,23 +77,12 @@
                                         type="text" class="form-control" value="<?php echo isset($_POST['username'])?$_POST['username']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Password</label><input
                                         name="password" type="text" class="form-control" value="<?php echo isset($_POST['password'])?$_POST['password']:''?>"></div>
-                                <div class="col-6">
-                                    <div class="form-check"><input name="acceptTerms" type="checkbox"
-                                            class="form-check-input " value=""><label class="form-check-label">Remember
-                                            me</label></div>
-                                </div>
-                                <div class="col-6 text-end"><a href="reset.html">Forgot Password?</a></div>
                             </div>
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
                                     In</button></div>
                         </form>
-                        <p class="mt-3 mb-0">Don't have an account?<a class="text-primary" href="signup.html">Sign
-                                up</a>
-                        </p>
                     </div>
                 </div>
-                <div class="privacy-link"><a href="signin.html">Have an issue with 2-factor authentication?</a><br><a
-                        href="signin.html">Privacy Policy</a></div>
             </div>
         </div>
     </div>

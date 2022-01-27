@@ -9,6 +9,10 @@ if(!(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_POS
 try{
     $petugas = new Petugas($_SESSION['username'], $_SESSION['password']);
     $infoPetugas = $petugas->login(['id']);
+    if($infoPetugas['level'] === 'admin'){
+        echo json_encode(['status' => false], JSON_PRETTY_PRINT);
+        exit();
+    }
     $pengaduan = new Pengaduan(intval($_POST['id']));
     if($infoPetugas && $pengaduan->tanggapi($_POST['tanggapan'], $infoPetugas['id'])){
         echo json_encode(['status' => true, "data" => $pengaduan->getfullinfo()]);
@@ -16,7 +20,6 @@ try{
     }
     echo json_encode((new Pengaduan($_POST['id']))->getfullinfo(), JSON_PRETTY_PRINT);
 }catch(userDoesNotExist){
-    echo 'user';
     echo json_encode(['status' => false], JSON_PRETTY_PRINT);
     exit();
 }

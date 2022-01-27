@@ -113,7 +113,7 @@
             $this->username = $username;
             $this->password = $password;
         }
-        public function daftar(string $nama, string $nik, string $telp)
+        public function daftar(string $nama, string $nik, string $telp, string $avatar)
         {
             if(strlen($this->username)<4) throw new Exception("Username Terlalu Pendek", 1);
             if(strlen($this->password)<6) throw new Exception("Password Terlalu Pendek", 1);
@@ -124,8 +124,8 @@
             $dpluser->execute();
             if($dpluser->get_result()->fetch_assoc()['COUNT(nik)'] > 0) throw new penggunaTelahTerdaftar("Username telah terdaftar", 3);
             $pass = password_hash($this->password, PASSWORD_BCRYPT);
-            $query = $this->connection->prepare("INSERT INTO masyarakat (nik, nama, username, password, telp) VALUES (?, ?, ?, ?, ?)");
-            $query->bind_param('sssss', $nik, $nama, $this->username, $pass, $telp);
+            $query = $this->connection->prepare("INSERT INTO masyarakat (nik, nama, username, password, telp, avatar) VALUES (?, ?, ?, ?, ?, ?)");
+            $query->bind_param('ssssss', $nik, $nama, $this->username, $pass, $telp, $avatar);
             $query->execute();
             if($query->error_list && $query->error_list[0]['errno'] === 1062)
             {
@@ -133,7 +133,7 @@
             }
         }
 
-        public function login(array $fields = array("nik","nama","username","telp")): array
+        public function login(array $fields = array("nik","nama","username","telp", "avatar")): array
         {
             $sfield = join(',', $fields);
             $query = $this->connection->prepare("SELECT {$sfield},password FROM masyarakat WHERE username =?");
@@ -263,7 +263,7 @@
                     $param[1] = $status;
                 }
             }
-            $queryString = 'SELECT masyarakat.nama, pengaduan.tgl,pengaduan.isi,pengaduan.foto,pengaduan.status,pengaduan.id,tanggapan.tgl as waktu_tanggapan,tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan RIGHT JOIN masyarakat ON masyarakat.nik = pengaduan.nik'.($status!== Status::null?' WHERE  status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
+            $queryString = 'SELECT masyarakat.nama, pengaduan.tgl,pengaduan.isi,pengaduan.foto,pengaduan.status,pengaduan.id,tanggapan.tgl as waktu_tanggapan, masyarakat.avatar, tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan RIGHT JOIN masyarakat ON masyarakat.nik = pengaduan.nik'.($status!== Status::null?' WHERE  status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
             $query = $this->connection->prepare($queryString);
             $param && $query->bind_param(...$param);
             $query->execute();

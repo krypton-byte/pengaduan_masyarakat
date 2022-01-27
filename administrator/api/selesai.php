@@ -2,11 +2,16 @@
 session_start();
 require '../../modules/models.php';
 header('content-type: application/json');
-if(!(isset($_SESSION['username']) && isset($_SESSION['password'])) &&  isset($_POST['id']) && is_numeric($_POST['id']) && (new Petugas($_SESSION['username'], $_SESSION['password']))->login()){
+if(!(isset($_SESSION['username']) && isset($_SESSION['password'])) &&  isset($_POST['id']) && is_numeric($_POST['id'])){
     echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
     exit();
 }
 $id = intval($_POST['id']);
+$info = (new Petugas($_SESSION['username'], $_SESSION['password']))->login();
+if($info['level'] === 'admin'){
+    echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
+    exit();
+}
 $pengaduan = new Pengaduan($id);
 $query = $pengaduan->connection->prepare('SELECT COUNT(id) FROM tanggapan WHERE id_pengaduan = ?');
 $query->bind_param('i', $id);

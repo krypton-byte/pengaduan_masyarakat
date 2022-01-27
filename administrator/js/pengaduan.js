@@ -249,7 +249,7 @@ $(document).ready(()=>{
             for(let x of json){
                 if(!(x.id in dataPengaduan)){
                     dataPengaduan[x.id] = x;
-                    $('#pengaduan').append(createCard(x.foto, x.tgl, x.isi, x.status, x.id, '../1.jpg', x.nama));
+                    $('#pengaduan').append(createCard(x.foto, x.tgl, x.isi, x.status, x.id, `../images/avatar/${x.avatar}`, x.nama));
                 }
             }
         })
