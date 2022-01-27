@@ -84,10 +84,18 @@ function kirimTanggapan(id){
         body: form
     }).then(async (resp)=>{
         const json = await resp.json();
-        if(json.status !== false){
-            document.getElementById('isiTanggapan').value = '';
+        if(json.status === true){
+            document.getElementById('isiTanggapan').setAttribute('readonly', '');
             dataPengaduan[id] = json.data;
             EditStatusByID(id, json.data.status);
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Berhasil Ditanggapi',
+                showConfirmButton: false,
+                timer: 2000
+            });
+
         }
     })
     

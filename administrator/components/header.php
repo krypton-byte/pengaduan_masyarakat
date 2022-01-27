@@ -1,5 +1,4 @@
 <?php
-  session_start();
   $_SESSION['position'] = 'administrator';
   if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
     header('location: ../logout.php');

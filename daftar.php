@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <body class="@@dashboard">
 
 <div id="preloader" style="display: none;"><i>.</i><i>.</i><i>.</i></div>
@@ -43,28 +46,29 @@ if(isset($_POST['nik']) && isset($_POST['username']) && $_POST['password'] && $_
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">AVATAR</h5>
+        <input type="hidden" value="avt1" nam="avatar" id="avt">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <div class="row d-flex justify-content-center">
             <div class="col-5 my-2 col-sm-4">
-                <img src="images/avatar/avt-1.jpg" alt="" srcset="">
+                <img src="images/avatar/avt-1.jpg" class="avatar" id="avt1" srcset="">
             </div>
             <div class="col-5 col-sm-4 my-2 mr-3">
-                <img src="images/avatar/avt-2.jpg" alt="" srcset="">
+                <img src="images/avatar/avt-2.jpg" class="avatar" id="avt2" srcset="">
             </div>
             <div class="col-5 col-sm-4 my-2">
-                <img src="images/avatar/avt-3.jpg" alt="" srcset="">
+                <img src="images/avatar/avt-3.jpg" class="avatar" id="avt3" srcset="">
             </div>
             <div class="col-5 col-sm-4 my-2 mr-3">
-                <img src="images/avatar/avt-4.jpg" alt="" srcset="">
+                <img src="images/avatar/avt-4.jpg" class="avatar" id="avt4" srcset="">
             </div>
             <div class="col-5 col-sm-4 my-2">
-                <img src="images/avatar/avt-5.jpg" alt="" srcset="">
+                <img src="images/avatar/avt-5.jpg" class="avatar" id="avt5" srcset="">
             </div>
             <div class="col-5 col-sm-4 my-2 mr-3">
-                <img src="images/avatar/avt-6.jpg" alt="" srcset="">
+                <img src="images/avatar/avt-6.jpg" class="avatar" id="avt6" srcset="">
             </div>
         </div>
       <div class="container-fluid">
@@ -78,11 +82,15 @@ if(isset($_POST['nik']) && isset($_POST['username']) && $_POST['password'] && $_
   </div>
 </div>
 <style>
-    .row img {
-        background-color: blue;
+    .avatar {
         border-radius: 20%;
     }
 </style>
+<script type="text/javascript">
+    $('.avatar').on('click', (x)=>{
+        document.getElementById('avt').value = x.target.getAttribute('id');
+    })
+</script>
 <div class="authincation section-padding">
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
@@ -116,12 +124,8 @@ if(isset($_POST['nik']) && isset($_POST['username']) && $_POST['password'] && $_
     </div>
 </div>
 <script>
-    fetch()
 </script>
 
-
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
 
