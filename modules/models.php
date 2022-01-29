@@ -236,13 +236,98 @@
             }
             throw new userDoesNotExist('user tidak ditemukan', 1);
         }
+        public function edit_petugas(array $data){
+            if(!array_key_exists('id', $data)) throw new Exception('key id tidak di set', 2);
+            if($this->login(['level'])['level'] !== 'admin') throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
+            $id = $data['id'];
+            if(array_key_exists('password', $data)){
+                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            }
+            if(array_key_exists('level', $data) && !(in_array($data['level'], ['petugas', 'admin']))){
+                unset($data['level']);
+            }
+            $ndata = array();
+            $type = '';
+            foreach(array('nama','username','password','telp', 'level') as $key){
+                if(array_key_exists($key, $data)){
+                    $ndata[$key.'= ?'] = $data[$key];
+                    $type.='s';
+                }
+            }
+            if(!$ndata) throw new Exception('masukan form input yg ingin di set', 2);
+            $query = $this->connection->prepare('UPDATE petugas SET '.join(array_keys($ndata)).' WHERE id = ?');
+            $ndata['id'] = $id;
+            $query->bind_param($type.'i', ...array_values($ndata));
+            $query->execute();
+            return $query->affected_rows;
 
-        public function jumlah_user(){
+        }
+
+        public function petugas(int $limit=0, int $offset=0, string $level = ''): array
+        {
+            if($this->login(['level'])['level'] !== 'admin') throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
+            $query = $this->connection->prepare('SELECT nama, username, telp FROM petugas'.($level?' WHERE level = ?':'').($limit?' LIMIT ? OFFSET ?':'').' ORDER BY petugas.nama ASC');
+            $params=array();
+            if($level){
+                array_push($params, 's', $level);
+            }
+            if($limit){
+                if($params){
+                    $params[0] .= 'ii';
+                    array_push($params, $limit, $offset);
+                }else{
+                    array_push($params, 'ii', $limit, $offset);
+                }
+            }
+            if($params){
+                $query->bind_param(...$params);
+            }
+            $query->execute();
+            return $query->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function masyarakat(int $limit = 0, int $offset = 0): array
+        {
+            if(($this->login(['level'])['level'] !== 'admin')) throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
+            $query = $this->connection->prepare('SELECT nama, username, telp FROM masyarakat'.($limit?' LIMIT ? OFFSET ?':'').' ORDER BY masyarakat.nama ASC');
+            $params=$limit?array('ii', $limit, $offset):array();
+            if($params){
+                $query->bind_param(...$params);
+            }
+            $query->execute();
+            return $query->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function hapus_masyarakat(int $nik): bool
+        {
+            if(($this->login(['level'])['level'] !== 'admin')) throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
+            $query = $this->connection->prepare('DELETE FROM masyarakat WHERE nik = ?');
+            $query->bind_param('i', $nik);
+            $query->execute();
+            return boolval($query->affected_rows);
+        }
+
+        
+        public function hapus_petugas(int $id): bool
+        {
+            $petugas = $this->login(['id', 'level']);
+            if($petugas['level'] !== 'admin') throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
+            if($petugas['id'] === $id) throw new Exception('id anda dgn id yg ingin dihapus terdapat kesamaan', 2);
+            $query = $this->connection->prepare('DELETE FROM petugas WHERE id = ?');
+            $query->bind_param('i', $id);
+            $query->execute();
+            return boolval($query->affected_rows);
+        }
+
+        public function jumlah_user(): int
+        {
             $query = $this->connection->prepare('SELECT COUNT(nik) FROM masyarakat');
             $query->execute();
             return $query->get_result()->fetch_assoc()['COUNT(nik)'];
         }
-        public function jumlah_pengaduan(string $filter = Status::null){
+
+        public function jumlah_pengaduan(string $filter = Status::null): int
+        {
             $query = $this->connection->prepare('SELECT COUNT(id) FROM pengaduan'.($filter !== Status::null ?' WHERE status = ?':''));
             if($filter !== Status::null){
                 $query->bind_param('s', $filter);
@@ -250,7 +335,9 @@
             $query->execute();
             return $query->get_result()->fetch_assoc()['COUNT(id)'];
         }
-        public function semua_pengaduan(int $limit = 5, int $offset = 0, string $status = Status::null){
+
+        public function semua_pengaduan(int $limit = 5, int $offset = 0, string $status = Status::null): array
+        {
             $param = $limit?array('ii', $limit, $offset):array();
             if($status!==Status::null)
             {
@@ -270,6 +357,11 @@
             return $query->get_result()->fetch_all(MYSQLI_ASSOC);
       
         }
+        public function __toString(): string
+        {
+            return "[ {$this->username} ]";
+        }
+
     }
 
     class Pengaduan extends Connection 
@@ -368,7 +460,10 @@
             return $query->affected_rows;
         }
         
-
+        public function __toString(): string
+        {
+            return "[ PENGADUAN: {$this->id_pengaduan} ]";
+        }
 
     }
 

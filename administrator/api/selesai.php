@@ -6,19 +6,23 @@ if(!(isset($_SESSION['username']) && isset($_SESSION['password'])) &&  isset($_P
     echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
     exit();
 }
-$id = intval($_POST['id']);
-$info = (new Petugas($_SESSION['username'], $_SESSION['password']))->login();
-if($info['level'] === 'admin'){
+try{
+    $id = intval($_POST['id']);
+    $info = (new Petugas($_SESSION['username'], $_SESSION['password']))->login();
+    if($info['level'] === 'admin'){
+        echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
+        exit();
+    }
+    $pengaduan = new Pengaduan($id);
+    $query = $pengaduan->connection->prepare('SELECT COUNT(id) FROM tanggapan WHERE id_pengaduan = ?');
+    $query->bind_param('i', $id);
+    $query->execute();
+    if($query->get_result()->fetch_assoc()['COUNT(id)']){
+        echo json_encode(['status' => $pengaduan->ubahStatus('selesai')], JSON_PRETTY_PRINT);
+        exit();
+    }
     echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
-    exit();
+}catch(userDoesNotExist){
+    echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
 }
-$pengaduan = new Pengaduan($id);
-$query = $pengaduan->connection->prepare('SELECT COUNT(id) FROM tanggapan WHERE id_pengaduan = ?');
-$query->bind_param('i', $id);
-$query->execute();
-if($query->get_result()->fetch_assoc()['COUNT(id)']){
-    echo json_encode(['status' => $pengaduan->ubahStatus('selesai')], JSON_PRETTY_PRINT);
-    exit();
-}
-echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
 ?>
