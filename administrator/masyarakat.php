@@ -17,6 +17,7 @@ include 'components/header.php';
                                         <table class="table">
                                             <thead>
                                                 <tr>
+                                                    
                                                     <th>Nama</th>
                                                     <th>NIK</th>
                                                     <th>Username</th>

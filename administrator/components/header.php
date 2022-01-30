@@ -195,14 +195,8 @@
               <span class="nav-text">Petugas</span></a>
               </li>
               <li>
-                <a href="masyarakat.php">
-                  <span>
-                  <i class="ri-user-line"></i>
-                  <span class="nav-text">
-                    Masyarakat
-                  </span>
-                  </span>
-                </a>
+                <a href="masyarakat.php"><span><i class="ri-user-line"></i></span>
+              <span class="nav-text">Masyarakat</span></a>
               </li>
             <?php
             }
