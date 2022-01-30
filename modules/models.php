@@ -300,7 +300,7 @@
         public function masyarakat(int $limit = 0, int $offset = 0): array
         {
             if(($this->login(['level'])['level'] !== 'admin')) throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
-            $query = $this->connection->prepare('SELECT nama, username, telp FROM masyarakat'.($limit?' LIMIT ? OFFSET ?':'').' ORDER BY masyarakat.nama ASC');
+            $query = $this->connection->prepare('SELECT nama, username, nik, avatar, telp FROM masyarakat ORDER BY masyarakat.nama ASC'.($limit?' LIMIT ? OFFSET ?':''));
             $params=$limit?array('ii', $limit, $offset):array();
             if($params){
                 $query->bind_param(...$params);

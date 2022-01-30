@@ -191,8 +191,18 @@
                 </a>
               </li>
               <li>
-                <a href="petugas.php"><span><i class="ri-user-add-line"></i></span>
+                <a href="petugas.php"><span><i class="ri-shield-user-line"></i></span>
               <span class="nav-text">Petugas</span></a>
+              </li>
+              <li>
+                <a href="masyarakat.php">
+                  <span>
+                  <i class="ri-user-line"></i>
+                  <span class="nav-text">
+                    Masyarakat
+                  </span>
+                  </span>
+                </a>
               </li>
             <?php
             }

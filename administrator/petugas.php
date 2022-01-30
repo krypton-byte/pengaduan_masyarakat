@@ -95,7 +95,7 @@ include 'components/header.php';
     </div>
 </div>
 <script>
-    const petugas = {};
+    var petugas = {};
     var LIMIT = 5;
     var OFFSET = 0;
     var level = '';
@@ -130,7 +130,7 @@ include 'components/header.php';
                                                     <td id="ph${id}">${phone}</td>
                                                     <td id="lv${id}">${level}</td>
                                                     <td style="text-align:center;">
-                                                        <button onclick="btndetail(${id});" class="btn btn-outline-primary"><i class="ri-information-line"></i> Details</button>
+                                                        <button onclick="btndetail('${id}');" class="btn btn-outline-primary"><i class="ri-information-line"></i> Details</button>
                                                     </td>
                                                 </tr>
         `);
@@ -145,7 +145,7 @@ include 'components/header.php';
         document.getElementById('btn2modal').innerText = 'Update';
         document.getElementById('btn2modal').onclick = kirimDataPetugas
         document.getElementById('btn1modal').innerText = 'Kembali';
-        document.getElementById('btn1modal').setAttribute('onclick', `btndetail(${id});`);
+        document.getElementById('btn1modal').setAttribute('onclick', `btndetail('${id}');`);
     }
 
     function btndetail(id){
@@ -233,9 +233,9 @@ include 'components/header.php';
             document.getElementById('btn1modal').removeAttribute('data-bs-dismiss');
             document.getElementById('btn1modal').setAttribute('onclick', '');
             document.getElementById('btn1modal').innerText = 'Hapus';
-            document.getElementById('btn1modal').setAttribute('onclick',`hapusPetugas(${id})`);
+            document.getElementById('btn1modal').setAttribute('onclick',`hapusPetugas('${id}')`);
             document.getElementById('btn2modal').innerText = 'Edit';
-            document.getElementById('btn2modal').setAttribute('onclick', `editPetugas(${id})`);
+            document.getElementById('btn2modal').setAttribute('onclick', `editPetugas('${id}')`);
         }
 
 
@@ -259,13 +259,15 @@ include 'components/header.php';
         }).then( async (resp)=>{
             const js = await resp.json();
             $('tbody').empty()
-            TOTAL=js.total;;
+            TOTAL=js.total;
+            petugas = {};
             js.petugas.forEach(x=>{
-                if(!Object.keys(petugas).includes(x)){
+                x.id = x.id.toString();
+                if(!Object.keys(petugas).includes(x.id)){
                     addItem(x.id, x.nama, x.username, x.telp, x.level);
                     petugas[x.id] = x;
                     OFFSET+=1;
-                    if(OFFSET<=5){
+                    if(OFFSET<=LIMIT){
                         document.getElementById('prev').style.display = 'none';
                     }else{
                         document.getElementById('prev').style.display = '';
