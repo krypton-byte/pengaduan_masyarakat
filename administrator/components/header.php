@@ -191,7 +191,7 @@
                 </a>
               </li>
               <li>
-                <a href="tambahuser.php"><span><i class="ri-user-add-line"></i></span>
+                <a href="petugas.php"><span><i class="ri-user-add-line"></i></span>
               <span class="nav-text">Petugas</span></a>
               </li>
             <?php

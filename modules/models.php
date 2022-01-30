@@ -210,7 +210,7 @@
             $this->password = $password;
         }
 
-        public function daftar(string $nama, string $telp, string $level = 'admin'): bool
+        public function daftar(string $nama, string $telp, string $level = 'admin'): array
         {
             $uname = $this->connection->prepare("SELECT username FROM petugas WHERE username = ?");
             $uname->bind_param('s', $this->username);
@@ -220,7 +220,16 @@
             $query = $this->connection->prepare("INSERT INTO petugas (nama, username, password, telp, level) VALUES (?, ?, ?, ?, ?)");
             $query->bind_param('sssss', $nama, $this->username, $pass, $telp, $level);
             $query->execute();
-            return !$query->errno;
+            return $this->get_petugas_by_id($query->insert_id);
+        }
+
+        public function get_petugas_by_id(int $id): array
+        {
+            $query = $this->connection->prepare('SELECT id, nama, username, telp, level FROM petugas WHERE id = ?');
+            $query->bind_param('i', $id);
+            $query->execute();
+            return $query->get_result()->fetch_assoc();
+
         }
 
         public function login(array $fields = array("nama","username","telp","level")): array
@@ -236,10 +245,12 @@
             }
             throw new userDoesNotExist('user tidak ditemukan', 1);
         }
-        public function edit_petugas(array $data){
+        public function edit_petugas(array $data): int
+        {
             if(!array_key_exists('id', $data)) throw new Exception('key id tidak di set', 2);
             if($this->login(['level'])['level'] !== 'admin') throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
             $id = $data['id'];
+            if(!is_numeric($id)) throw new Exception('data id bertype number', 2);
             if(array_key_exists('password', $data)){
                 $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             }
@@ -250,13 +261,13 @@
             $type = '';
             foreach(array('nama','username','password','telp', 'level') as $key){
                 if(array_key_exists($key, $data)){
-                    $ndata[$key.'= ?'] = $data[$key];
+                    $ndata[$key.' = ? '] = $data[$key];
                     $type.='s';
                 }
             }
-            if(!$ndata) throw new Exception('masukan form input yg ingin di set', 2);
-            $query = $this->connection->prepare('UPDATE petugas SET '.join(array_keys($ndata)).' WHERE id = ?');
-            $ndata['id'] = $id;
+            if(!$ndata) throw new Exception('masukan form input yg akan di set', 2);
+            $query = $this->connection->prepare('UPDATE petugas SET '.join(',',array_keys($ndata)).'WHERE id = ?');
+            $ndata['id'] = intval($id);
             $query->bind_param($type.'i', ...array_values($ndata));
             $query->execute();
             return $query->affected_rows;
@@ -266,7 +277,7 @@
         public function petugas(int $limit=0, int $offset=0, string $level = ''): array
         {
             if($this->login(['level'])['level'] !== 'admin') throw new Exception('Hanya level admin yg bisa menggunakan fitur ini', 2);
-            $query = $this->connection->prepare('SELECT nama, username, telp FROM petugas'.($level?' WHERE level = ?':'').($limit?' LIMIT ? OFFSET ?':'').' ORDER BY petugas.nama ASC');
+            $query = $this->connection->prepare('SELECT id, nama, username, telp, level FROM petugas'.($level?' WHERE level = ?':'').' ORDER BY petugas.nama ASC'.($limit?' LIMIT ? OFFSET ?':''));
             $params=array();
             if($level){
                 array_push($params, 's', $level);
@@ -326,6 +337,15 @@
             return $query->get_result()->fetch_assoc()['COUNT(nik)'];
         }
 
+        public function jumlah_petugas(string $filter = ''): int
+        {
+            $query = $this->connection->prepare('SELECT COUNT(id) FROM petugas'.($filter?' WHERE status = ?':''));
+            if($filter){
+                $query->bind_param('s', $filter);
+            }
+            $query->execute();
+            return $query->get_result()->fetch_assoc()['COUNT(id)'];
+        }
         public function jumlah_pengaduan(string $filter = Status::null): int
         {
             $query = $this->connection->prepare('SELECT COUNT(id) FROM pengaduan'.($filter !== Status::null ?' WHERE status = ?':''));
