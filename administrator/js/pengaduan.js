@@ -227,7 +227,7 @@ function monthNum2Str(num){
     const month = [
         "Januari", "Februari", "Maret",
         "April", "Mei", "Juni",
-        "Juli", "Agustus", "Septeber",
+        "Juli", "Agustus", "September",
         "Oktober", "November", "Desember"
     ];
     return month[num]

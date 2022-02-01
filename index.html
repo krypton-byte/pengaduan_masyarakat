@@ -13,6 +13,7 @@
 
     <!-- Favicon -->
     <link rel="icon" href="assets/img/favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -169,7 +170,7 @@
                             <a class="nav-link anchor" href="author.html">Author</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link anchor" href="daftar.php">Sign nup</a>
+                            <a class="nav-link anchor" href="daftar.php">Sign up</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link anchor" href="login.php">Sign in</a>
@@ -196,21 +197,49 @@
         <div class="content-bottom">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-md-6" data-aos="fade-right">
-                        <p class="mb-0">With us you will</p>
-                        <h2>succeed</h2>
-                        <p>Proactively syndicate open-source e-markets after low-risk high-yield synergy. Professionally
-                            simplify visionary technology.
-                        </p>
-                        <a href="daftar.php" class="btn btn-primary btn-white shadow btn-theme"><span>Sign Up</span></a>
+                    <div class="col-md-8" data-aos="fade-right">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="mx-auto col-sm-9 col-xl-6 col-md-6">
+                                        <img src="https://avatars.githubusercontent.com/u/52121207" alt="" class="mx-auto img-fluid rounded" srcset="">
+                                    </div>
+                                    <div class="col-md-6 col-xs-12 pt-md-0 pt-5 px-3 px-md-0">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="teks underline text-center">
+                                                    AUTHOR
+                                                </h5>
+                                             </div>
+                                            <div class="col-12">
+                                                <p class="teks pt-3">
+                                                    Nama: Puja
+                                                </p>
+                                             </div>
+                                             <div class="col-12 pt-3">
+                                                 <p class="teks">
+                                                     Kelas: XII - RPL 1
+                                                 </p>
+                                              </div>
+                                              <div class="col-12 text-center pt-5">
+                                                <a href="https://github.com/krypton-byte" target="_blank" class="icon" rel="noopener noreferrer"><i class="Li ri-github-fill"></i></a>
+                                                <a href="https://wa.me/6283172366463" target="_blank" class="icon" rel="noopener noreferrer"><i class="Li ri-whatsapp-line"></i></a>
+                                                <a href="https://krypton-byte.codes" target="_blank" class="icon" rel="noopener noreferrer"><i class="Li ri-global-line"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
                     </div>
-                    <div class="col-md-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="col-md-4" data-aos="fade-left" data-aos-delay="200">
                         <img src="assets/img/mockup.png" class="img-fluid d-block mx-auto" alt="">
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
     <!-- End Header -->
 
 
@@ -246,7 +275,33 @@
         </div>
     </footer>
     <!-- End  Footer  -->
+    <style>
+        .icon {
+            text-decoration: none;
+            color: black;
+        }
+        .icon:hover {
+            color: black;
+        }
 
+        .teks {
+            color: white;
+            text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF; 
+            /* color: black;
+            text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #49ff18, 0 0 30px #49FF18, 0 0 40px #49FF18, 0 0 55px #49FF18, 0 0 75px #49ff18; */
+        }
+        .underline {
+            border-bottom: 3px solid black;
+        }
+        .card {
+            box-shadow: 0  0 5px 0;
+            background: inherit;
+            backdrop-filter: blur(10px);
+        }
+        .Li {
+            font-size: 40px;
+        }
+    </style>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -272,6 +327,7 @@
 
     <!-- Our Main JS -->
     <script src="assets/js/main.js"></script>
+    
 
 </body>
 
