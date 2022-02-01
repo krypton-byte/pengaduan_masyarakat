@@ -179,15 +179,15 @@ function setDetailsFromID(id){
     document.getElementById('previewmodal').src = document.getElementById(`img${id}`).getAttribute('src');
     document.getElementById('isiaduan').value = unescapeHtml(document.getElementById(`isi-${id}`).innerHTML.match(/<span.*?>/g)?/(.*?)<span id=.*?>[\.]+<\/span><span .*?>(.*?)<\/span>/.exec(document.getElementById(`isi-${id}`).innerHTML).slice(1, 3).join(''):document.getElementById(`isi-${id}`).innerHTML);
     document.getElementById('isiaduan').setAttribute('readonly', '');
-    document.getElementById('btn1modal').innerHTML = 'Hapus';
+    document.getElementById('btn1modal').innerHTML = '<i class="ri-delete-bin-5-line"></i> Hapus';
     document.getElementById('btn1modal').setAttribute('onclick','deletePengaduan();')
     document.getElementById('isiaduan').style.display = '';
     document.getElementById('isitanggapan').style.display = 'none';
     if(globalThis.tanggapan[id]){
-        document.getElementById('btn2modal').innerHTML = 'Tanggapan';
+        document.getElementById('btn2modal').innerHTML = '<i class="ri-chat-check-line"></i> Tanggapan';
         document.getElementById('btn2modal').setAttribute('onclick','lihatTanggapan();')
     }else{
-        document.getElementById('btn2modal').innerHTML = 'Edit';
+        document.getElementById('btn2modal').innerHTML = '<i class="ri-edit-2-line"></i> Edit';
         document.getElementById('btn2modal').setAttribute('onclick','toUpdateMode();');
     }
 }
@@ -197,8 +197,8 @@ function lihatTanggapan(){
     document.getElementById('isitanggapan').style.display = '';
     document.getElementById('previewmodal').removeAttribute('onclick');
     document.getElementById('isitanggapan').value = globalThis.tanggapan[id].tanggapan;
-    document.getElementById('btn2modal').innerHTML = 'Hapus';
-    document.getElementById('btn1modal').innerHTML = 'Kembali';
+    document.getElementById('btn2modal').innerHTML = '<i class="ri-delete-bin-5-line"></i> Hapus';
+    document.getElementById('btn1modal').innerHTML = '<i class="ri-arrow-go-back-line"></i> Kembali';
     document.getElementById('btn2modal').setAttribute('onclick', 'deletePengaduan()');
     document.getElementById('btn1modal').setAttribute('onclick', `setDetailsFromID("${id}");`);
 
@@ -209,9 +209,9 @@ function toUpdateMode(){
     const id = document.getElementById('idpengaduan').value;
     document.getElementById('previewmodal').setAttribute('onclick', "javascript:$('#filemodal').trigger('click');");
     document.getElementById('isiaduan').removeAttribute('readonly');
-    document.getElementById('btn1modal').innerHTML = 'Kembali';
+    document.getElementById('btn1modal').innerHTML = '<i class="ri-arrow-go-back-line"></i> Kembali';
     document.getElementById('btn1modal').setAttribute('onclick', `setDetailsFromID("${id}")`)
-    document.getElementById('btn2modal').innerHTML = 'Ubah';
+    document.getElementById('btn2modal').innerHTML = '<i class="ri-send-plane-2-line"></i> Update';
     document.getElementById('btn2modal').onclick = updatePengaduan
 }
 

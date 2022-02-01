@@ -27,7 +27,7 @@ try{
 
     <!---- Website Information ---->
     <title>Pengaduan Masyarakat</title>
-    <meta name="description" content="ENFTX is the complete UX &amp; UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in &amp; sign up etc.">
+    <meta name="description" content="Pengaduan Masyarakat Berbasis WEB">
 
 
     <!-- Favicon icon -->
@@ -53,7 +53,7 @@ try{
             <div class="col-xxl-12">
                 <div class="header-content">
                     <div class="header-left">
-                        <div class="brand-logo"><a class="mini-logo" href="index.html"><img src="images/logoi.png" alt="" width="40"></a></div>
+                        <div class="brand-logo"><a class="mini-logo" href=""><img src="images/logoi.png" alt="" width="40"></a></div>
                     </div>
                     <div class="header-right">
                         <!-- <div class="theme-switch"><i class="ri-sun-line"></i></div> -->

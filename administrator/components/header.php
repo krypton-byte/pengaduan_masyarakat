@@ -33,7 +33,7 @@
     <title>Pengaduan Masyarakat</title>
     <meta
       name="description"
-      content="ENFTX is the complete UX &amp; UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in &amp; sign up etc."
+      content="Pengaduan Masyarakat Berbasis WEB"
     />
 
     <!-- Favicon icon -->
@@ -126,7 +126,7 @@
                       aria-expanded="false"
                     >
                       <div class="user icon-menu active">
-                        <span><img src="../images/avatar/9.jpg" alt="" /></span>
+                        <span><img src="../images/avatar/officeman.png" alt="" /></span>
                       </div>
                     </div>
                     <div

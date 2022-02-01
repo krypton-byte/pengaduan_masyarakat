@@ -76,7 +76,7 @@
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username"
                                         type="text" class="form-control" value="<?php echo isset($_POST['username'])?$_POST['username']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Password</label><input
-                                        name="password" type="text" class="form-control" value="<?php echo isset($_POST['password'])?$_POST['password']:''?>"></div>
+                                        name="password" type="password" class="form-control" value="<?php echo isset($_POST['password'])?$_POST['password']:''?>"></div>
                             </div>
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
                                     In</button></div>
