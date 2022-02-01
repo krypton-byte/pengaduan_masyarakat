@@ -8,7 +8,7 @@ include 'components/header.php';
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">TAMBAH PETUGAS</h5>
+        <h5 class="modal-title" id="modaltitle">TAMBAH PETUGAS</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -102,6 +102,7 @@ include 'components/header.php';
     var TOTAL = -1;
 
     document.getElementById('tambah').onclick = (el) => {
+        document.getElementById('modaltitle').innerText ='Tambah Petugas';
         $('#exampleModal').modal('show');
         Array.from(document.getElementsByTagName('input')).forEach(x=>{
             x.value='';
@@ -136,6 +137,7 @@ include 'components/header.php';
         `);
     }
     function editPetugas(id){
+        document.getElementById('modaltitle').innerText ='Edit Petugas';
         document.getElementById('inpassword').innerText = 'password (opsional)';
         document.getElementById('username').removeAttribute('readonly');
         document.getElementById('nama').removeAttribute('readonly');
@@ -149,6 +151,7 @@ include 'components/header.php';
     }
 
     function btndetail(id){
+        document.getElementById('modaltitle').innerText ='Info Petugas';
         $('#exampleModal').modal('show');
         $('.modal-backdrop').remove();
         detailsPetugas(id);
@@ -156,7 +159,8 @@ include 'components/header.php';
 
     function hapusPetugas(id){
         Swal.fire({
-            title: `Apakah Anda yakin ingin menghapus ${petugas[id].nama}?`,
+            title: `Apakah Anda yakin ingin menghapus ?`,
+            background:localStorage.theme?'#1D1933':'white',
             showCancelButton: true,
             cancelButtonText:'Batal',
             confirmButtonText: 'Hapus',
@@ -177,6 +181,7 @@ include 'components/header.php';
                     }
                     Swal.fire({
                             position: 'top-end',
+                            background:localStorage.theme?'#1D1933':'white',
                             icon: 'success',
                             title: `Petugas ${statuspetugas!== false?'Berhasil':'Gagal'} di hapus`,
                             showConfirmButton: false,
@@ -201,6 +206,7 @@ include 'components/header.php';
             Swal.fire({
                     position: 'top-end',
                     icon: 'success',
+                    background:localStorage.theme?'#1D1933':'white',
                     title: `Petugas ${js.status!== false?'Berhasil':'Gagal'} di${id?'tambahkan':'ubah'}`,
                     showConfirmButton: false,
                     timer: 1500
@@ -291,36 +297,6 @@ include 'components/header.php';
     $(document).ready(()=>{
         PrevNextBTN();
     })
-
-    // document.getElementById('btn1modal').onclick = (ev) =>{
-    //     const form = new FormData();
-    //     Array.from(document.getElementsByTagName('input')).forEach(x=>{
-    //         form.append(x.name, x.value);
-    //     })
-    //     form.append('level', document.getElementById('level').value);
-    //     fetch('api/tambahuser.php', {
-    //         method: 'POST',
-    //         body: form
-    //     }).then(async (x)=>{
-    //         if((await x.json()).status){
-    //             Swal.fire({
-    //                 position: 'top-end',
-    //                 icon: 'success',
-    //                 title: 'Berhasil',
-    //                 showConfirmButton: false,
-    //                 timer: 2000
-    //             });
-    //         }else{
-    //             Swal.fire({
-    //                 position: 'top-end',
-    //                 icon: 'error',
-    //                 title: 'Gagal',
-    //                 showConfirmButton: false,
-    //                 timer: 2000
-    //             });
-    //         }
-    //     })
-   // }
 </script>
 <?php
 include 'components/footer.php';

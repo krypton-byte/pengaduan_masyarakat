@@ -3,6 +3,7 @@ include 'components/header.php';
 ?>
 <script src="js/dash-user.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
     #previewupload {
         display: block;
@@ -14,6 +15,29 @@ include 'components/header.php';
         width: 400px;
     }
 </style>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Detail Pengaduan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <input type="file" style="display: none;" name="" id="filemodal">
+      <img src="" id="previewmodal" width="100%" class="img-fluid rounded mb-3" alt="">
+      <input type="hidden" id="idpengaduan">
+      <textarea class="form-control" style="height:100%;" placeholder="Pesan" id="isiaduan"></textarea>
+      <textarea class="form-control" style="height:100%;" placeholder="Pesan" id="isitanggapan" style="display: none;" readonly></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn1modal" class="btn btn-secondary">Hapus</button>
+        <button type="button" id="btn2modal" class="btn btn-primary">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="col-12">
     <div class="card filter-tab">
         <div class="card-body bs-0 p-0 bg-transparent">
@@ -32,18 +56,12 @@ include 'components/header.php';
                                                 <label>Pesan</label>
                                                 <textarea class="form-control" style="height:100%;" placeholder="Pesan" id="isipengaduan"></textarea>
                                                 <input type="file" accept="image/*" style="display:none;" id="uploadgambar">
-                                                <input type="hidden" id="idpengaduan">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mt-3 mb-3">
                                             <div class="text-start">
                                                 <p class="mb-2">Tanggal</p>
                                                 <h5 class="text-muted" id="view-tgl"></h5>
-                                            </div>
-                                            <div class="text-end">
-                                                <p class="mb-2">Status :
-                                                    <!-- --> <strong class="text-primary" id="view-status">Tidak Diketahui</strong>
-                                                </p>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-center">

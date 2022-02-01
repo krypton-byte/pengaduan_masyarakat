@@ -370,7 +370,7 @@
                     $param[1] = $status;
                 }
             }
-            $queryString = 'SELECT masyarakat.nama, pengaduan.tgl,pengaduan.isi,pengaduan.foto,pengaduan.status,pengaduan.id,tanggapan.tgl as waktu_tanggapan, masyarakat.avatar, tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan RIGHT JOIN masyarakat ON masyarakat.nik = pengaduan.nik'.($status!== Status::null?' WHERE  status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
+            $queryString = 'SELECT masyarakat.nik, masyarakat.telp, masyarakat.nama, pengaduan.tgl,pengaduan.isi,pengaduan.foto,pengaduan.status,pengaduan.id,tanggapan.tgl as waktu_tanggapan, masyarakat.avatar, tanggapan.id as tanggapan_id,pengaduan.isi,tanggapan.tanggapan FROM tanggapan RIGHT JOIN pengaduan ON pengaduan.id = tanggapan.id_pengaduan INNER JOIN masyarakat ON masyarakat.nik = pengaduan.nik'.($status!== Status::null?' WHERE  status = ?':'').' ORDER BY pengaduan.id DESC'.($limit?' LIMIT ? OFFSET ?':'');
             $query = $this->connection->prepare($queryString);
             $param && $query->bind_param(...$param);
             $query->execute();
@@ -469,8 +469,8 @@
 
         public function delete(): int
         {
-            $image = $this->connection->prepare('SELECT foto FROM WHERE id = ?');
-            $image->bind_params('i', $this->id_pengaduan);
+            $image = $this->connection->prepare('SELECT foto FROM pengaduan WHERE id = ?');
+            $image->bind_param('i', $this->id_pengaduan);
             $image->execute();
             $data = $image->get_result()->fetch_assoc();
             if($data) unlink('../gambar-aduan/'.$data['foto']);

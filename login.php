@@ -36,10 +36,10 @@
             $uname = $_POST['username']?$_POST['username']:$_SESSION['username'];
             $passwd = $_POST['password']?$_POST['password']:$_SESSION['password'];
             $user = (new Masyarakat($uname, $passwd))->login();
-            $_SESSION['username'] = $_POST['username'];
-            $_SESSION['password'] = $_POST['password'];
-            $_SESSION['nama'] = $user['nama'];
-            $_SESSION['level'] = 'user';
+            $_SESSION['username_'] = $_POST['username'];
+            $_SESSION['password_'] = $_POST['password'];
+            $_SESSION['nama_'] = $user['nama'];
+            $_SESSION['level_'] = 'user';
             header('Location: dashboard.php');
             echo 'Swal.fire({
                 position: \'top-end\',

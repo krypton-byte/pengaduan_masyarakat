@@ -3,7 +3,7 @@ session_start();
 require '../modules/imgbb.php';
 require '../modules/models.php';
 header('content-type: application/json');
-if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
+if(!(isset($_SESSION['username_']) && isset($_SESSION['password_']))){
     echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
     exit();
 }
@@ -16,7 +16,7 @@ if(isset($_POST['isi']) && isset($_POST['id'])){
     }
     $pengaduan = new Pengaduan($_POST['id']);
     try{
-        if($pengaduan->user()['username'] === $_SESSION['username'] && $pengaduan->update(...$params)){
+        if($pengaduan->user()['username'] === $_SESSION['username_'] && $pengaduan->update(...$params)){
             echo json_encode(['status' => true, 'hasil' => ($pengaduan->get(['foto', 'id', 'tgl', 'status', 'isi']))]);
             exit();
         }

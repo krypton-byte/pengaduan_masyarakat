@@ -3,11 +3,11 @@ session_start();
 $_SESSION['position'] = 'masyarakat';
 require 'modules/models.php';
 try{
-    if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
+    if(!(isset($_SESSION['username_']) && isset($_SESSION['password_']))){
         header('location: ../logout.php');
         exit();
     }
-    $masyarakat = new Masyarakat($_SESSION['username'], $_SESSION['password']);
+    $masyarakat = new Masyarakat($_SESSION['username_'], $_SESSION['password_']);
     $info = $masyarakat->login();
 }catch(userDoesNotExist){
     header('location: logout.php');
@@ -77,7 +77,7 @@ try{
                                         <img src="images/avatar/<?php echo $info['avatar']?>" alt="">
                                         </span>
                                         <div class="user-info">
-                                            <h5><?php echo $_SESSION['nama'];?></h5>
+                                            <h5><?php echo htmlspecialchars($_SESSION['nama_']);?></h5>
                                             <span>Masyarakat</span>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@ try{
         <ul class="show">
             <li class="active">
                 <a href="index-2.html" class="active">
-                <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" fill="rgba(111,78,242,1)"/></svg></span>
+                <span><i class="ri-layout-grid-fill"></i></span>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>

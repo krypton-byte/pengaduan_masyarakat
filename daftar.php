@@ -19,6 +19,7 @@
 <body class="@@dashboard">
 
 <div id="preloader" style="display: none;"><i>.</i><i>.</i><i>.</i></div>
+
 <?php
 if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['telp']) && isset($_POST['nama']) && isset($_POST['avatar']) && is_numeric($_POST['avatar'])){
     require 'modules/models.php';

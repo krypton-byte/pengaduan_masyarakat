@@ -141,8 +141,8 @@
                             <img src="../images/profile/3.png" alt="" />
                           </span>
                           <div class="user-info">
-                            <h5><?php echo $info['nama']?></h5>
-                            <span><?php echo $info["level"]?></span>
+                            <h5><?php echo htmlspecialchars($info['nama'])?></h5>
+                            <span><?php echo htmlspecialchars($info["level"])?></span>
                           </div>
                         </div>
                       </div>

@@ -76,7 +76,8 @@ include 'components/header.php';
     }
     function hapusUser(nik){
         Swal.fire({
-            title: `Apakah Anda yakin ingin menghapus ${masyarakat[nik].nama}?`,
+            title: `Apakah Anda yakin ingin menghapus ?`,
+            background:localStorage.theme?'#1D1933':'white',
             showCancelButton: true,
             cancelButtonText:'Batal',
             confirmButtonText: 'Hapus',
@@ -91,6 +92,7 @@ include 'components/header.php';
                     const rstatus = await resp.json();
                     Swal.fire({
                             position: 'top-end',
+                            background:localStorage.theme?'#1D1933':'white',
                             icon: 'success',
                             title: `User ${rstatus?'Berhasil':'Gagal'} dihapus`,
                             showConfirmButton: false,

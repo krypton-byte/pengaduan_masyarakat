@@ -40,6 +40,15 @@ $(document).ready(()=>{
         }
 
     }
+    document.getElementById('filemodal').onchange = event => {
+        console.log('tertrigger');
+        const [file] = event.target.files;
+        if(file){
+            console.log(URL.createObjectURL(file));
+            document.getElementById('previewmodal').src = URL.createObjectURL(file);
+        }
+
+    }
 
 })
 
@@ -140,7 +149,7 @@ function escapeHtml(unsafe)
                                     <p class="mb-2">Status : <strong class="text-primary" id="status-${id}">${status}</strong></p>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center mt-3"><a data="${id}" onclick="detailsItem(this);" class="btn btn-primary"><i class="ri-information-line"></i>  Details</a></div>
+                            <div class="d-flex justify-content-center mt-3"><a data="${id}" onclick="detailsItem(this);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="ri-information-line"></i>  Details</a></div>
                         </div>
                     </div>
                 </div>
@@ -157,101 +166,101 @@ function updateUICard(image_url, tanggal, isi, id, status){
 
 
 }
+
 function detailsItem(th){
-    const id = th.getAttribute('data');
-    setDetailsFromID(id);
-}
-function setDetailsFromID(id_=''){
-    const id = id_ || document.getElementById('idpengaduan').value
-    document.getElementById('view-tgl').innerHTML = document.getElementById(`tgl-${id}`).innerHTML;
-    document.getElementById('previewupload').src = document.getElementById(`img${id}`).getAttribute('src');
-    document.getElementById(`view-status`).innerHTML = document.getElementById(`status-${id}`).innerHTML;
-    document.getElementById('idpengaduan').value = id;
-    document.getElementById('button1btn').innerHTML = '<i class="ri-delete-bin-line"></i>  Hapus';
-    document.getElementById('button1btn').setAttribute('onclick', 'deletePengaduan();')
-    document.getElementById('tambahpengaduan').innerHTML='<a href="#" onclick="toTulisPengaduan();" class="btn btn-primary" style="width: 100%;" style="animation: backInRight;animation-duration: 1s;"><i class="ri-add-circle-line"></i>  Buat Pengaduan</a>';
-    document.getElementById('isipengaduan').value = unescapeHtml(document.getElementById(`isi-${id}`).innerHTML.match(/<span.*?>/g)?/(.*?)<span id=.*?>[\.]+<\/span><span .*?>(.*?)<\/span>/.exec(document.getElementById(`isi-${id}`).innerHTML).slice(1, 3).join(''):document.getElementById(`isi-${id}`).innerHTML);
-    window.scrollTo(0, 0);
-    readOnlyPengaduan(id);
+    $('.modal-backdrop').remove();
+    const id =th.getAttribute('data');
+    setDetailsFromID(id)
 }
 
+function setDetailsFromID(id){
+    document.getElementById('previewmodal').removeAttribute('onclick');
+    document.getElementById('idpengaduan').value = id;
+    document.getElementById('previewmodal').src = document.getElementById(`img${id}`).getAttribute('src');
+    document.getElementById('isiaduan').value = unescapeHtml(document.getElementById(`isi-${id}`).innerHTML.match(/<span.*?>/g)?/(.*?)<span id=.*?>[\.]+<\/span><span .*?>(.*?)<\/span>/.exec(document.getElementById(`isi-${id}`).innerHTML).slice(1, 3).join(''):document.getElementById(`isi-${id}`).innerHTML);
+    document.getElementById('isiaduan').setAttribute('readonly', '');
+    document.getElementById('btn1modal').innerHTML = 'Hapus';
+    document.getElementById('btn1modal').setAttribute('onclick','deletePengaduan();')
+    document.getElementById('isiaduan').style.display = '';
+    document.getElementById('isitanggapan').style.display = 'none';
+    if(globalThis.tanggapan[id]){
+        document.getElementById('btn2modal').innerHTML = 'Tanggapan';
+        document.getElementById('btn2modal').setAttribute('onclick','lihatTanggapan();')
+    }else{
+        document.getElementById('btn2modal').innerHTML = 'Edit';
+        document.getElementById('btn2modal').setAttribute('onclick','toUpdateMode();');
+    }
+}
+function lihatTanggapan(){
+    const id = document.getElementById('idpengaduan').value;
+    document.getElementById('isiaduan').style.display = 'none';
+    document.getElementById('isitanggapan').style.display = '';
+    document.getElementById('previewmodal').removeAttribute('onclick');
+    document.getElementById('isitanggapan').value = globalThis.tanggapan[id].tanggapan;
+    document.getElementById('btn2modal').innerHTML = 'Hapus';
+    document.getElementById('btn1modal').innerHTML = 'Kembali';
+    document.getElementById('btn2modal').setAttribute('onclick', 'deletePengaduan()');
+    document.getElementById('btn1modal').setAttribute('onclick', `setDetailsFromID("${id}");`);
+
+}
 
 function toUpdateMode(){
-    $('#uploadgambar').val('');
-    document.getElementById('previewupload').setAttribute('onclick', "javascript:$('#uploadgambar').trigger('click');");
-    document.getElementById('isipengaduan').removeAttribute('readonly');
-    $('#tambahpengaduan').empty();
-    document.getElementById('button1btn').innerHTML = '<i class="ri-arrow-go-back-line"></i>  Batal';
-    document.getElementById('button2btn').innerHTML = '<i class="ri-send-plane-line"></i>  Update';
-    document.getElementById('button1btn').setAttribute('onclick',`setDetailsFromID();`);
-    document.getElementById('button2btn').setAttribute('onclick', 'updatePengaduan();');
+    $('#filemodal').val('');
+    const id = document.getElementById('idpengaduan').value;
+    document.getElementById('previewmodal').setAttribute('onclick', "javascript:$('#filemodal').trigger('click');");
+    document.getElementById('isiaduan').removeAttribute('readonly');
+    document.getElementById('btn1modal').innerHTML = 'Kembali';
+    document.getElementById('btn1modal').setAttribute('onclick', `setDetailsFromID("${id}")`)
+    document.getElementById('btn2modal').innerHTML = 'Ubah';
+    document.getElementById('btn2modal').onclick = updatePengaduan
+}
 
-}
-function toTulisPengaduan(){
-    document.getElementById('view-tgl').innerHTML = cdate();
-    document.getElementById(`view-status`).innerHTML = 'Tidak Diketahui';
-    document.getElementById('previewupload').setAttribute('onclick', "javascript:$('#uploadgambar').trigger('click');");
-    document.getElementById('isipengaduan').removeAttribute('readonly');
-    document.getElementById('button1btn').innerHTML = '<i class="ri-restart-fill"></i>  Reset';
-    document.getElementById('button1btn').setAttribute('onclick', 'resetPengaduan();');
-    document.getElementById('button2btn').innerHTML = '<i class="ri-send-plane-line"></i>  Kirim'; 
-    document.getElementById('button2btn').setAttribute('onclick', 'buat_pengaduan();'); 
-    $('#tambahpengaduan').empty(); 
-    document.getElementById('isipengaduan').value = ''
-    document.getElementById('previewupload').src = 'images/upload.png';
-    $('#uploadgambar').val('');
-}
 function resetPengaduan(){
     document.getElementById('view-tgl').innerHTML = cdate();
     document.getElementById('isipengaduan').value = '';
     document.getElementById('previewupload').src = 'images/upload.png';
 }
 
-function readOnlyPengaduan(id){
-    document.getElementById('previewupload').removeAttribute('onclick');
-    document.getElementById('isipengaduan').setAttribute('readonly', '');
-    document.getElementById('button1btn').innerHTML = '<i class="ri-delete-bin-line"></i>  Hapus';
-    document.getElementById('button1btn').setAttribute('onclick', 'deletePengaduan();')
-    document.getElementById('button2btn').innerHTML = globalThis.tanggapan[id]?'<i class="ri-chat-check-line"></i>  Tanggapan':'<i class="ri-edit-line"></i>  Edit';
-    document.getElementById('button2btn').setAttribute('onclick', globalThis.tanggapan[id]?'lihatTanggapan();':'toUpdateMode();');
-}
-function lihatTanggapan(){
-    const id = document.getElementById('idpengaduan').value;
-    document.getElementById('isipengaduan').value = globalThis.tanggapan[id].tanggapan;
-    document.getElementById('button2btn').innerHTML = '<i class="ri-arrow-go-back-line"></i>  Kembali';
-    document.getElementById('button2btn').setAttribute('onclick', 'setDetailsFromID();');
-    $('#tambahpengaduan').empty();
 
-}
 function deletePengaduan(){
-    const form = new FormData();
-    form.append('id', document.getElementById('idpengaduan').value);
-        fetch('api/hapus.php', {
-            method:'POST',
-            body: form
-        
-       }).then(async (resp)=>{
-           const json = await resp.json();
-           if(json.status){
-               $(`#i${document.getElementById('idpengaduan').value}`).remove();
-               Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Berhasil Dihapus',
-                showConfirmButton: false,
-                timer: 1500
-              });
-              toTulisPengaduan();
-           }else{
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Gagal Dihapus',
-                showConfirmButton: false,
-                timer: 1500
-              })
-           }
-       })
+    Swal.fire({
+        title: 'Apakah anda yakin ?',
+        showCancelButton: true,
+        cancelButtonText: `Tidak`,
+        confirmButtonText: 'Ya',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            const form = new FormData();
+            form.append('id', document.getElementById('idpengaduan').value);
+                fetch('api/hapus.php', {
+                    method:'POST',
+                    body: form
+                
+               }).then(async (resp)=>{
+                   const json = await resp.json();
+                   if(json.status){
+                       $(`#i${document.getElementById('idpengaduan').value}`).remove();
+                       Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Berhasil Dihapus',
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                      $('#staticBackdrop').modal('hide');
+                   }else{
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Gagal Dihapus',
+                        showConfirmButton: false,
+                        timer: 1500
+                      })
+                   }
+               })
+        }
+      })
 }
 
 function pengaduan(){
@@ -266,13 +275,13 @@ function pengaduan(){
             const js = await response.json();
             globalThis.TOTAL = js.total;
             js.hasil.map(x => {
-                if(!(globalThis.allID.includes(x.id))){
-                    $('#pengaduan').append(createCard(x.foto, cdate(), x.isi, x.status, x.id));
-                    globalThis.allID.push(x.id);
+                if(!(globalThis.allID.includes(x.id.toString()))){
+                    $('#pengaduan').append(createCard(x.foto, cdate(), x.isi, x.status, x.id.toString()));
+                    globalThis.allID.push(x.id.toString());
                     globalThis.OFFSET++;
                     if(x.tanggapan_id){
                         const split = x.waktu_tanggapan.split(' ')[0].split('-')
-                        globalThis.tanggapan[x.id] = {
+                        globalThis.tanggapan[x.id.toString()] = {
                             tgl: `${split[2]}, ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`,
                             tanggapan: x.tanggapan
                         }
@@ -288,8 +297,8 @@ function pengaduan(){
 
 function updatePengaduan(){
     const form = new FormData();
-    document.getElementById('uploadgambar').files.length && form.append('image',document.getElementById('uploadgambar').files[0])
-    form.append('isi', document.getElementById('isipengaduan').value);
+    document.getElementById('filemodal').files.length && form.append('image',document.getElementById('filemodal').files[0])
+    form.append('isi', document.getElementById('isiaduan').value);
     form.append('id', document.getElementById('idpengaduan').value)
     fetch('api/update.php', {
         method: 'POST',
@@ -297,9 +306,8 @@ function updatePengaduan(){
     }).then(async (response) => {
         const js = await response.json();
         if(js.status){
-            updateUICard(js.hasil.foto, js.hasil.tgl, js.hasil.isi, js.hasil.id, js.hasil.status);
-            setDetailsFromID(js.id);
-            readOnlyPengaduan();
+            updateUICard('gambar-aduan/'+js.hasil.foto, js.hasil.tgl, js.hasil.isi, js.hasil.id, js.hasil.status);
+            setDetailsFromID(js.hasil.id.toString());
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -342,6 +350,11 @@ function buat_pengaduan()
        });
        globalThis.allID.push(json.id);
        setDetailsFromID(json.id);
+       document.getElementById('view-tgl').innerHTML = cdate();
+       document.getElementById('previewupload').setAttribute('onclick', "javascript:$('#uploadgambar').trigger('click');");
+       document.getElementById('isipengaduan').value = ''
+       document.getElementById('previewupload').src = 'images/upload.png';
+       $('#uploadgambar').val('');
      }else{
         Swal.fire({
             position: 'top-end',

@@ -3,13 +3,13 @@ session_start();
 require '../modules/imgbb.php';
 require '../modules/models.php';
 header('content-type: application/json');
-if(!(isset($_SESSION['username']) && isset($_SESSION['password']))){
+if(!(isset($_SESSION['username_']) && isset($_SESSION['password_']))){
     echo json_encode([ "status" => false ], JSON_PRETTY_PRINT);
     exit();
 }
 if(isset($_POST['isi']) && isset($_FILES['image']))
 {
-    $user = new Masyarakat($_SESSION['username'], $_SESSION['password']);
+    $user = new Masyarakat($_SESSION['username_'], $_SESSION['password_']);
     if( getimagesize($_FILES['image']['tmp_name'])/* $img */ ){
         #$img = uploadImageFromPath($_FILES['image']['tmp_name']);
         $file = uploadImageFromPath($_FILES['image']['tmp_name']);
