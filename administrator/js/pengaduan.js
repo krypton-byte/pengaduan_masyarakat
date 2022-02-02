@@ -20,7 +20,7 @@ function lihatTanggapan(id){
     btn1.removeAttribute('data-bs-dismiss');
     btn1.innerHTML = 'Kembali';
     btn1.setAttribute('onclick', `lihatPengaduan(${id})`);
-    btn2.innerHTML = 'Selesai';
+    btn2.innerHTML = '<i class="ri-check-double-line"></i> Selesai';
     btn2.setAttribute('onclick', `selesai(${id});`);
 }
 
@@ -106,8 +106,34 @@ function readOnly(th){
     document.getElementById('tanggapan').value = unescapeHtml(document.getElementById(`isi-${id}`).innerHTML.match(/<span.*?>/g)?/(.*?)<span id=.*?>[\.]+<\/span><span .*?>(.*?)<\/span>/.exec(document.getElementById(`isi-${id}`).innerHTML).slice(1, 3).join(''):document.getElementById(`isi-${id}`).innerHTML);
 }
 
-function Hapus(){
-
+function Hapus(id){
+    Swal.fire({
+        title: `Apakah Anda yakin ingin menghapus ?`,
+        background:localStorage.theme?'#1D1933':'white',
+        showCancelButton: true,
+        cancelButtonText:'Batal',
+        confirmButtonText: 'Hapus',
+    }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            const form = new FormData();
+            form.append('id', id);
+            fetch('api/hapus.php', {
+                method:'POST',
+                body: form
+            }).then(async (resp)=>{
+                const js = await resp.json();
+                js.status && $(`#i${id}`).remove();
+                Swal.fire({
+                    position: 'top-end',
+                    icon: js.status?'success':'error',
+                    title: js.status?'Berhasil':'Gagal',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            })
+        }
+    })
 }
 
 function selesai(id){
@@ -206,10 +232,10 @@ function escapeHtml(unsafe)
                                 </div>
                             </div>
                              <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="btnTanggapan(${id});">
-                                                <i class="ri-restart-fill"></i>  Tanggapi
+                                                ${status === "0"?'<i class="ri-chat-new-line">  </i>Tanggapi':'<i class="ri-chat-check-line">  </i>Tanggapan'}
                                             </a>
-                            <a onclick="buat_pengaduan();" id="button2btn" class="btn btn-secondary">
-                                                <i class="ri-send-plane-line"></i>  Hapus</a>
+                            <a onclick="Hapus('${id}');" id="button2btn" class="btn btn-secondary">
+                            <i class="ri-delete-bin-5-line"></i> Hapus</a>
                         </div>
                     </div>
                 </div>

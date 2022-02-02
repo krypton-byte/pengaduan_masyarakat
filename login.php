@@ -33,8 +33,8 @@
         echo '<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script><script>$(document).ready(()=>{';
         try
         {
-            $uname = $_POST['username']?$_POST['username']:$_SESSION['username'];
-            $passwd = $_POST['password']?$_POST['password']:$_SESSION['password'];
+            $uname = $_POST['username'];
+            $passwd = $_POST['password'];
             $user = (new Masyarakat($uname, $passwd))->login();
             $_SESSION['username_'] = $_POST['username'];
             $_SESSION['password_'] = $_POST['password'];
@@ -58,7 +58,7 @@
             })';
         }
         echo '})</script>';
-    }else if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+    }else if(isset($_SESSION['username_']) && isset($_SESSION['password_'])){
         header('Location: dashboard.php');
     }
 ?>

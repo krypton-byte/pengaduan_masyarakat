@@ -26,7 +26,7 @@ try{
     <meta http-equiv="pragma" content="no-cache" />
 
     <!---- Website Information ---->
-    <title>Pengaduan Masyarakat</title>
+    <title>Masyarakat</title>
     <meta name="description" content="Pengaduan Masyarakat Berbasis WEB">
 
 

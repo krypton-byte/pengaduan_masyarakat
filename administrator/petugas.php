@@ -1,5 +1,6 @@
 <?php
 session_start();
+$title = "Daftar Petugas";
 include 'components/header.php';
 ?>
 

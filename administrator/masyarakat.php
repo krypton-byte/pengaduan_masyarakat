@@ -1,5 +1,6 @@
 <?php
 session_start();
+$title = "Daftar Masyarkat";
 include 'components/header.php';
 ?>
 <div class="container">

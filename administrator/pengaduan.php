@@ -1,5 +1,6 @@
 <?php
 session_start();
+$title = "Pengaduan";
 include 'components/header.php';
 ?>
 <script src="js/pengaduan.js"></script>

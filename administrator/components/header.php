@@ -30,7 +30,7 @@
     <meta http-equiv="pragma" content="no-cache" />
 
     <!---- Website Information ---->
-    <title>Pengaduan Masyarakat</title>
+    <title><?php echo $title ?></title>
     <meta
       name="description"
       content="Pengaduan Masyarakat Berbasis WEB"

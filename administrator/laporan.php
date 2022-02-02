@@ -1,5 +1,6 @@
 <?php
 session_start();
+$title = "Buat Laporan";
 include 'components/header.php';
 ?>
 
