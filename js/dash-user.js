@@ -132,7 +132,7 @@ function escapeHtml(unsafe)
   function createCard(image_url, tanggal, isi, status, id)
   {
         const split = tanggal.split(' ')[0].split('-')
-        const tgl = tanggal.match('-')?`${split[2]}, ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`:tanggal;
+        const tgl = tanggal.match('-')?`${split[2]} ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`:tanggal;
       return `
       <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6" id="i${id}" style="animation: fadeInDown;animation-duration: 1s;">
                     <div class="card items">
@@ -158,7 +158,7 @@ function escapeHtml(unsafe)
 
 function updateUICard(image_url, tanggal, isi, id, status){
     const split = tanggal.split(' ')[0].split('-')
-    const tgl = `${split[2]}, ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`;
+    const tgl = `${split[2]} ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`;
     document.getElementById(`img${id}`).src = image_url;
     document.getElementById(`isi-${id}`).innerHTML = isi.length > 29 ?buatSelengkapnya(isi, id):isi;
     document.getElementById(`tgl-${id}`).innerHTML = tgl;

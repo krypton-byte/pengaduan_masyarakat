@@ -18,7 +18,7 @@ function lihatTanggapan(id){
     const btn1 = document.getElementById('btn1');
     const btn2 = document.getElementById('btn2');
     btn1.removeAttribute('data-bs-dismiss');
-    btn1.innerHTML = 'Kembali';
+    btn1.innerHTML = '<i class="ri-arrow-left-s-line"></i> Kembali';
     btn1.setAttribute('onclick', `lihatPengaduan(${id})`);
     btn2.innerHTML = '<i class="ri-check-double-line"></i> Selesai';
     btn2.setAttribute('onclick', `selesai(${id});`);
@@ -31,7 +31,7 @@ function tulisTanggapan(ids){
     const btn1 = document.getElementById('btn1');
     const btn2 = document.getElementById('btn2');
     btn1.removeAttribute('data-bs-dismiss');
-    btn1.innerHTML = 'Kembali';
+    btn1.innerHTML = '<i class="ri-arrow-left-s-line"></i> Kembali';
     btn1.setAttribute('onclick', `lihatPengaduan(${ids})`);
     btn2.innerHTML = 'Kirim';
     btn2.setAttribute('onclick', `kirimTanggapan(${ids})`);
@@ -144,6 +144,7 @@ function selesai(id){
         body: form
     }).then(async (response)=>{
         if((await response.json()).status){
+            EditStatusByID(id, 'selesai');
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -214,7 +215,7 @@ function escapeHtml(unsafe)
   function createCard(image_url, tanggal, isi, status, id, avatar, author)
   {
         const split = tanggal.split(' ')[0].split('-')
-        const tgl = tanggal.match('-')?`${split[2]}, ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`:tanggal;
+        const tgl = tanggal.match('-')?`${split[2]} ${monthNum2Str(parseInt(split[1])-1)} ${split[0]}`:tanggal;
       return `
       <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12 d-xs-flex justify-content-center" id="i${id}" style="animation: fadeInDown;animation-duration: 1s;">
                     <div class="card items">
@@ -231,7 +232,7 @@ function escapeHtml(unsafe)
                                     <p class="mb-2">Status : <strong class="text-primary" id="status-${id}">${status}</strong></p>
                                 </div>
                             </div>
-                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="btnTanggapan(${id});">
+                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="T${id}" onclick="btnTanggapan(${id});">
                                                 ${status === "0"?'<i class="ri-chat-new-line">  </i>Tanggapi':'<i class="ri-chat-check-line">  </i>Tanggapan'}
                                             </a>
                             <a onclick="Hapus('${id}');" id="button2btn" class="btn btn-secondary">
@@ -244,6 +245,7 @@ function escapeHtml(unsafe)
 
   function EditStatusByID(id, status){
         document.getElementById(`status-${id}`).innerText = status;
+        document.getElementById(`T${id}`).innerHTML = status === "0"?'<i class="ri-chat-new-line">  </i>Tanggapi':'<i class="ri-chat-check-line">  </i>Tanggapan';
   }
 
 /**
@@ -285,7 +287,6 @@ $(document).ready(()=>{
         console.log(x);
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
             pengaduan();
-            console.log('end');
         }
     })
     document.getElementById('filter').onchange = elm => {
