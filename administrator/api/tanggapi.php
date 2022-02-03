@@ -8,7 +8,7 @@ if(!(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_POS
 }
 try{
     $petugas = new Petugas($_SESSION['username'], $_SESSION['password']);
-    $infoPetugas = $petugas->login(['id']);
+    $infoPetugas = $petugas->login(['id', 'level']);
     if($infoPetugas['level'] === 'admin'){
         echo json_encode(['status' => false], JSON_PRETTY_PRINT);
         exit();

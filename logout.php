@@ -1,7 +1,7 @@
 <?php
 session_start();
 $position = $_SESSION['position'];
-if($position === 'petugas'){
+if($position === 'administrator'){
     unset($_SESSION['username']);
     unset($_SESSION['password']);
     unset($_SESSION['nama']);

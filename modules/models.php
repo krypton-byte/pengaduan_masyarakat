@@ -95,7 +95,7 @@
         protected string $host = '127.0.0.1';
         protected string $username_mysql = 'root';
         protected string $password_mysql = '';
-        protected string $database = 'pengaduan_masyarakat1';
+        protected string $database = 'pengaduan_masyarakat';
         public function __construct()
         {
             $this->connection = new mysqli($this->host, $this->username_mysql, $this->password_mysql, $this->database);
