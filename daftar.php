@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!---- Website Information ---->
     <title>Daftar Masyarakat</title>
-    <meta name="description" content="ENFTX is the complete UX &amp; UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in &amp; sign up etc.">
+    <meta name="description" content="Pengaduan Masyarakat Berbasis WEB">
 
 
     <!-- Favicon icon -->
@@ -144,7 +144,7 @@
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Daftar</button></div>
                         </form>
                         <div class="text-center">
-                        <p class="mt-3 mb-0">Sudah punya akun? <a class="text-primary" href="daftar.php">Login</a>
+                        <p class="mt-3 mb-0">Sudah punya akun? <a class="text-primary" href="login.php">Login</a>
                         </p>
                         </div>
                     </div>

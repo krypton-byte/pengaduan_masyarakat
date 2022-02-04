@@ -15,7 +15,7 @@
     <!---- Website Information ---->
     <title>Daftar Petugas</title>
     <meta name="description"
-        content="ENFTX is the complete UX & UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in & sign up etc.">
+        content="Pengaduan Masyarakat Berbasis WEB">
 
 
     <!-- Favicon icon -->
