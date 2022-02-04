@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!---- Website Information ---->
-    <title>Sign Up</title>
+    <title>Daftar Masyarakat</title>
     <meta name="description" content="ENFTX is the complete UX &amp; UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in &amp; sign up etc.">
 
 
@@ -104,9 +104,10 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
 <script type="text/javascript">
     $('.avatar').on('click', (x)=>{
         document.getElementById('avt').value = x.target.getAttribute('id').replace('avt','');
-        Array.from(document.getElementsByClassName('avatar')).forEach((x)=>{
-            x.style.border = '2px solid blue';
+        Array.from(document.getElementsByClassName('avatar')).forEach((y)=>{
+            y.style.border = '';
         })
+        x.target.style.border = '2px solid blue';
         $('#exampleModal').modal('hide');
         document.getElementById('preview').src = x.target.getAttribute('src');
     })
@@ -115,11 +116,11 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
             <div class="col-xl-5 col-md-6">
-                <div class="mini-logo text-center my-4"><a href="index-2.html"><img src="images/logo.png" alt=""></a>
-                    <h4 class="card-title mt-5">Sign up to ENFTX</h4>
+                <div class="mini-logo text-center my-4"><img src="images/logoi.png" width="100px" alt="">
+                    <h4 class="card-title mt-5">Masyarakat</h4>
                 </div>
                 <div class="auth-form card">
-                    <div class="card-body">
+                    <div class="card-body  bg-transparent">
                         <form action="#" method="POST">
                             <div class="row">
                                 <div class="col-12 mb-3"><label class="form-label">Nik</label><input name="nik" type="text" class="form-control" value="<?php echo isset($_POST['nik'])?$_POST['nik']:'';?>"></div>
@@ -140,11 +141,10 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
                                     <!-- <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal"">Ubah</button> -->
                                 </div>
                             </div>
-                            <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
-                                    Up</button></div>
+                            <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Daftar</button></div>
                         </form>
                         <div class="text-center">
-                            <p class="mt-3 mb-0"><a class="text-primary" href="login.php">Sign in</a>to your account</p>
+                            <p class="mt-3 mb-0"><a class="text-primary" href="login.php">Login</a>?</p>
                         </div>
                     </div>
                 </div>
@@ -168,7 +168,21 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
 
 
 
-
+<style>
+    body {
+        background-image: url('images/bg/eagle-flat-landscape-720p.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+    }
+    .card-body {
+        box-shadow: 0  0 5px 0;
+        background: inherit;
+        backdrop-filter: blur(10px);
+    }
+        
+</style>
 <script src="js/scripts.js"></script>
 
 

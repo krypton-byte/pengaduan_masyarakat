@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!---- Website Information ---->
-    <title>Sign In</title>
+    <title>Login Petugas</title>
     <meta name="description"
         content="ENFTX is the complete UX & UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in & sign up etc.">
 
@@ -66,11 +66,11 @@
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
             <div class="col-xl-5 col-md-6">
-                <div class="mini-logo text-center my-4"><a href="index-2.html"><img src="../images/logoi.png" width="150px" alt=""></a>
-                    <h4 class="card-title mt-5">Administrator</h4>
+                <div class="mini-logo text-center my-4"><a href="index-2.html"><img src="../images/logoi.png" width="100px" alt=""></a>
+                    <h4 class="card-title mt-5">Petugas</h4>
                 </div>
                 <div class="auth-form card">
-                    <div class="card-body">
+                    <div class="card-body bg-transparent">
                         <form action="#" method="POST">
                             <div class="row">
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username"
@@ -89,7 +89,20 @@
 </div>
 
 
-
+<style>
+        body {
+        background-image: url('../images/bg/eagle-flat-landscape-720p.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+    }
+    .card-body {
+            box-shadow: 0  0 5px 0;
+            background: inherit;
+            backdrop-filter: blur(10px);
+        }
+</style>
 
 </body>
 </html>
