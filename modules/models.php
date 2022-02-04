@@ -116,9 +116,11 @@
         public function daftar(string $nama, string $nik, string $telp, string $avatar)
         {
             if(strlen($this->username)<4) throw new Exception("Username Terlalu Pendek", 1);
+            if(strlen($this->username)>25) throw new Exception("Username Terlalu Panjang", 1);
             if(strlen($this->password)<6) throw new Exception("Password Terlalu Pendek", 1);
-            if(!is_numeric($nik)) throw new IsNotNumeric("Isi NIK dengan Angka", 1);
-            if(!is_numeric($telp)) throw new IsNotNumeric("Isi Telp dengan Angka", 2);
+            if(strlen($this->$nik) !== 16 && !is_numeric($nik)) throw new Exception("NIK Tidak Valid", 1);
+            if(!is_numeric($telp)) throw new IsNotNumeric("Nomer Telepon tidak valid", 2);
+            if(strlen($telp) > 13) throw new IsNotNumeric("Nomer Telepon terlalu panjang", 2);
             $dpluser = $this->connection->prepare("SELECT COUNT(nik) FROM masyarakat WHERE username = ?");
             $dpluser->bind_param('s', $this->username);
             $dpluser->execute();
@@ -136,7 +138,7 @@
         public function login(array $fields = array("nik","nama","username","telp", "avatar")): array
         {
             $sfield = join(',', $fields);
-            $query = $this->connection->prepare("SELECT {$sfield},password FROM masyarakat WHERE username =?");
+            $query = $this->connection->prepare("SELECT {$sfield},password FROM masyarakat WHERE username = ?");
             $query->bind_param('s', $this->username);
             $query->execute();
             $result = $query->get_result()->fetch_assoc();
@@ -212,6 +214,12 @@
 
         public function daftar(string $nama, string $telp, string $level = 'admin'): array
         {
+
+            if(strlen($this->username)<4) throw new Exception("Username Terlalu Pendek", 1);
+            if(strlen($this->username)>25) throw new Exception("Username Terlalu Panjang", 1);
+            if(strlen($this->password)<6) throw new Exception("Password Terlalu Pendek", 1);
+            if(!is_numeric($telp)) throw new IsNotNumeric("Nomer Telepon Tidak Valid", 2);
+            if(strlen($telp)>13) throw new IsNotNumeric("Nomer Telepon Terlalu Panjang", 2);
             $uname = $this->connection->prepare("SELECT username FROM petugas WHERE username = ?");
             $uname->bind_param('s', $this->username);
             $uname->execute();
@@ -223,7 +231,7 @@
             return $this->get_petugas_by_id($query->insert_id);
         }
 
-        public function get_petugas_by_id(int $id): array
+        public function get_petugas_by_id(int $id): array | null
         {
             $query = $this->connection->prepare('SELECT id, nama, username, telp, level FROM petugas WHERE id = ?');
             $query->bind_param('i', $id);

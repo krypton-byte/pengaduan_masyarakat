@@ -37,7 +37,7 @@
     />
 
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -147,7 +147,7 @@
                         </div>
                       </div>
                       <a class="dropdown-item logout" href="../logout.php">
-                        <i class="ri-logout-circle-line"></i>Logout
+                        <i class="ri-logout-circle-line"></i>Keluar
                       </a>
                     </div>
                   </div>

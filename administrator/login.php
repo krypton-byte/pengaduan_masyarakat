@@ -27,41 +27,6 @@
 <script src="../vendor/jquery/jquery.min.js"></script>
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
-<?php
-    if(isset($_POST['username']) && isset($_POST['password'])) {
-        require '../modules/models.php';
-        echo '<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script><script>$(document).ready(()=>{';
-        try
-        {
-            $uname = $_POST['username']?$_POST['username']:$_SESSION['username'];
-            $passwd = $_POST['password']?$_POST['password']:$_SESSION['password'];
-            $user = (new Petugas($uname, $passwd))->login();
-            $_SESSION['username'] = $_POST['username'];
-            $_SESSION['password'] = $_POST['password'];
-            $_SESSION['nama'] = $user['nama'];
-            $_SESSION['level'] = $user["level"];
-            header('Location: index.php');
-            echo 'Swal.fire({
-                position: \'top-end\',
-                icon: \'success\',
-                title: \'login berhasil\',
-                showConfirmButton: false,
-                timer: 2000
-            })';
-        } catch (userDoesNotExist){
-            echo 'Swal.fire({
-                position: \'top-end\',
-                icon: \'error\',
-                title: \'akun belum terdaftar\',
-                showConfirmButton: false,
-                timer: 2000
-            })';
-        }
-        echo '})</script>';
-    }else if(isset($_SESSION['username']) && isset($_SESSION['password'])){
-        header('Location: index.php');
-    }
-?>
 <div class="authincation section-padding">
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
@@ -72,6 +37,27 @@
                 <div class="auth-form card">
                     <div class="card-body bg-transparent">
                         <form action="#" method="POST">
+                        <?php
+                            if(isset($_POST['username']) && isset($_POST['password'])) {
+                                require '../modules/models.php';
+                                try
+                                {
+                                    $uname = $_POST['username']?$_POST['username']:$_SESSION['username'];
+                                    $passwd = $_POST['password']?$_POST['password']:$_SESSION['password'];
+                                    $user = (new Petugas($uname, $passwd))->login();
+                                    $_SESSION['username'] = $_POST['username'];
+                                    $_SESSION['password'] = $_POST['password'];
+                                    $_SESSION['nama'] = $user['nama'];
+                                    $_SESSION['level'] = $user["level"];
+                                    header('Location: index.php');
+                                    echo '<div class="alert alert-info" role="alert">Login Berhasil</div>';
+                                } catch (userDoesNotExist){
+                                    echo '<div class="alert alert-danger" role="alert">Akun Tidak Terdaftar</div>';
+                                }
+                            }else if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+                                header('Location: index.php');
+                            }
+                        ?>
                             <div class="row">
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username"
                                         type="text" class="form-control" value="<?php echo isset($_POST['username'])?$_POST['username']:'';?>"></div>
@@ -81,6 +67,8 @@
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
                                     In</button></div>
                         </form>
+                        <p class="mt-3 mb-0">Belum punya akun? <a class="text-primary" href="daftar.php">Daftar</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -101,7 +89,11 @@
             box-shadow: 0  0 5px 0;
             background: inherit;
             backdrop-filter: blur(10px);
-        }
+    }
+    .alert {
+        backdrop-filter: blur(10px);
+        opacity: 76%;
+    }
 </style>
 
 </body>

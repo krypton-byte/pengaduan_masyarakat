@@ -21,19 +21,19 @@ include 'components/header.php';
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="inputUsername" class="col-sm-2 col-form-label">username: </label>
+            <label for="inputUsername" class="col-sm-2 col-form-label">Username: </label>
             <div class="col-sm-10">
                 <input type="text" id="username" name="username" class="form-control" id="inputPassword">
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="inputPassword" id="inpassword" class="col-sm-2 col-form-label">password: </label>
+            <label for="inputPassword" id="inpassword" class="col-sm-2 col-form-label">Password: </label>
             <div class="col-sm-10">
                 <input type="password" id="password" name="password" class="form-control" id="inputPassword">
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="inputTelp" class="col-sm-2 col-form-label">telp: </label>
+            <label for="inputTelp" class="col-sm-2 col-form-label">Telepon: </label>
             <div class="col-sm-10">
                 <input type="text" id="telp" name="telp" class="form-control" id="inputPassword">
             </div>

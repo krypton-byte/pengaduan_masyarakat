@@ -28,8 +28,8 @@ include 'components/header.php';
           <input type="file" style="display: none;" name="" id="filemodal">
       <img src="" id="previewmodal" width="100%" class="img-fluid rounded mb-3" alt="">
       <input type="hidden" id="idpengaduan">
-      <textarea class="form-control" style="height:100%;" placeholder="Pesan" id="isiaduan"></textarea>
-      <textarea class="form-control" style="height:100%;" placeholder="Pesan" id="isitanggapan" style="display: none;" readonly></textarea>
+      <textarea class="form-control" style="height:100%;" placeholder="Isi Pengaduan" id="isiaduan"></textarea>
+      <textarea class="form-control" style="height:100%;" placeholder="Isi Pengaduan" id="isitanggapan" style="display: none;" readonly></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" id="btn1modal" class="btn btn-secondary">Hapus</button>
@@ -53,8 +53,8 @@ include 'components/header.php';
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-16 mb-3" >
-                                                <label>Pesan</label>
-                                                <textarea class="form-control" style="height:100%;" placeholder="Pesan" id="isipengaduan"></textarea>
+                                                <label>Isi Pengaduan</label>
+                                                <textarea class="form-control" style="height:100%;" placeholder="" id="isipengaduan"></textarea>
                                                 <input type="file" accept="image/*" style="display:none;" id="uploadgambar">
                                             </div>
                                         </div>

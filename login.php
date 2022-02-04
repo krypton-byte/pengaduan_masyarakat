@@ -27,41 +27,6 @@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
-<?php
-    if(isset($_POST['username']) && isset($_POST['password'])) {
-        require 'modules/models.php';
-        echo '<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script><script>$(document).ready(()=>{';
-        try
-        {
-            $uname = $_POST['username'];
-            $passwd = $_POST['password'];
-            $user = (new Masyarakat($uname, $passwd))->login();
-            $_SESSION['username_'] = $_POST['username'];
-            $_SESSION['password_'] = $_POST['password'];
-            $_SESSION['nama_'] = $user['nama'];
-            $_SESSION['level_'] = 'user';
-            header('Location: dashboard.php');
-            echo 'Swal.fire({
-                position: \'top-end\',
-                icon: \'success\',
-                title: \'login berhasil\',
-                showConfirmButton: false,
-                timer: 2000
-            })';
-        } catch (userDoesNotExist){
-            echo 'Swal.fire({
-                position: \'top-end\',
-                icon: \'error\',
-                title: \'akun belum terdaftar\',
-                showConfirmButton: false,
-                timer: 2000
-            })';
-        }
-        echo '})</script>';
-    }else if(isset($_SESSION['username_']) && isset($_SESSION['password_'])){
-        header('Location: dashboard.php');
-    }
-?>
 <div class="authincation section-padding">
     <div class="container h-100">
         <div class="row justify-content-center h-100 align-items-center">
@@ -71,6 +36,28 @@
                 </div>
                 <div class="auth-form card">
                     <div class="card-body bg-transparent">
+                    <?php
+                        if(isset($_POST['username']) && isset($_POST['password'])) {
+                            require 'modules/models.php';
+                            try
+                            {
+                                $uname = $_POST['username'];
+                                $passwd = $_POST['password'];
+                                $user = (new Masyarakat($uname, $passwd))->login();
+                                $_SESSION['username_'] = $_POST['username'];
+                                $_SESSION['password_'] = $_POST['password'];
+                                $_SESSION['nama_'] = $user['nama'];
+                                $_SESSION['level_'] = 'user';
+
+                                echo '<div class="alert alert-info" role="alert">Login Berhasil</div>';
+                                header('Location: dashboard.php');
+                            } catch (userDoesNotExist){
+                                echo '<div class="alert alert-danger" role="alert">Akun Tidak Terdaftar</div>';
+                            }
+                        }else if(isset($_SESSION['username_']) && isset($_SESSION['password_'])){
+                            header('Location: dashboard.php');
+                        }
+                    ?>
                         <form action="#" method="POST">
                             <div class="row">
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username"
@@ -82,7 +69,7 @@
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
                                     In</button></div>
                         </form>
-                        <p class="mt-3 mb-0">Belum mempunyai akun? <a class="text-primary" href="daftar.php">Daftar</a>
+                        <p class="mt-3 mb-0">Belum punya akun? <a class="text-primary" href="daftar.php">Daftar</a>
                         </p>
                     </div>
                 </div>
@@ -104,6 +91,10 @@
             background: inherit;
             backdrop-filter: blur(10px);
         }
+    .alert {
+        backdrop-filter: blur(10px);
+        opacity: 76%;
+    }
 </style>
 
 

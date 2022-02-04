@@ -226,6 +226,7 @@ function deletePengaduan(){
     Swal.fire({
         title: 'Apakah anda yakin ?',
         showCancelButton: true,
+        background:localStorage.theme?'#1D1933':'white',
         cancelButtonText: `Tidak`,
         confirmButtonText: 'Ya',
       }).then((result) => {
@@ -243,6 +244,7 @@ function deletePengaduan(){
                        $(`#i${document.getElementById('idpengaduan').value}`).remove();
                        Swal.fire({
                         position: 'top-end',
+                        background:localStorage.theme?'#1D1933':'white',
                         icon: 'success',
                         title: 'Berhasil Dihapus',
                         showConfirmButton: false,
@@ -252,6 +254,7 @@ function deletePengaduan(){
                    }else{
                     Swal.fire({
                         position: 'top-end',
+                        background:localStorage.theme?'#1D1933':'white',
                         icon: 'error',
                         title: 'Gagal Dihapus',
                         showConfirmButton: false,
@@ -310,6 +313,7 @@ function updatePengaduan(){
             setDetailsFromID(js.hasil.id.toString());
             Swal.fire({
                 position: 'top-end',
+                background:localStorage.theme?'#1D1933':'white',
                 icon: 'success',
                 title: 'Pengaduan Berhasil diubah',
                 showConfirmButton: false,
@@ -318,6 +322,7 @@ function updatePengaduan(){
         }else{
             Swal.fire({
                 position: 'top-end',
+                background:localStorage.theme?'#1D1933':'white',
                 icon: 'error',
                 title: 'Pengaduan Gagal diubah',
                 showConfirmButton: false,
@@ -343,6 +348,7 @@ function buat_pengaduan()
         document.getElementById('pengaduan').childNodes[4]&&document.getElementById('pengaduan').childNodes[4].getAttribute?$(`#${document.getElementById('pengaduan').childNodes[4].getAttribute('id')}`).before(card):$('#pengaduan').append(card);
         Swal.fire({
            position: 'top-end',
+           background:localStorage.theme?'#1D1933':'white',
            icon: 'success',
            title: 'Pengaduan Berhasil dibuat',
            showConfirmButton: false,
@@ -358,6 +364,7 @@ function buat_pengaduan()
      }else{
         Swal.fire({
             position: 'top-end',
+            background:localStorage.theme?'#1D1933':'white',
             icon: 'error',
             title: 'Pengaduan Gagal dibuat',
             showConfirmButton: false,

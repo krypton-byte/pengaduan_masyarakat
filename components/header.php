@@ -62,8 +62,6 @@ try{
                             <span class="dark"><i class="ri-moon-line"></i></span>
                             <span class="light"><i class="ri-sun-line"></i></span>
                         </div>
-
-
                         
                         <div class="dropdown profile_log dropdown">
                             <div data-bs-toggle="dropdown" aria-haspopup="true" class="" aria-expanded="false">
@@ -83,7 +81,7 @@ try{
                                     </div>
                                 </div>
                                 <a class="dropdown-item logout" href="logout.php">
-                                    <i class="ri-logout-circle-line"></i>Logout
+                                    <i class="ri-logout-circle-line"></i>Keluar
                                 </a>
                             </div>
                         </div>

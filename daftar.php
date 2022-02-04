@@ -20,26 +20,6 @@
 
 <div id="preloader" style="display: none;"><i>.</i><i>.</i><i>.</i></div>
 
-<?php
-if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['telp']) && isset($_POST['nama']) && isset($_POST['avatar']) && is_numeric($_POST['avatar'])){
-    require 'modules/models.php';
-    require 'modules/avatar.php';
-        try
-        {
-            $user = new Masyarakat($_POST['username'], $_POST['password']);
-            $user->daftar($_POST['nama'], $_POST['nik'], $_POST['telp'], getAvatarFileByIndex(intval($_POST['avatar'])));
-            header('Location: login.php');
-            echo '<div class="alert alert-info" role="alert">
-            Akun berhasil didaftarkan!
-          </div>';
-        } catch (penggunaTelahTerdaftar | IsNotNumeric | Exception $e){
-            echo '<div class="alert alert-danger" role="alert">';
-            echo  $e->getMessage();
-            echo '</div>';
-        }
-}
-
-?>
 <!-- Button trigger modal -->
 
 
@@ -122,11 +102,31 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
                 <div class="auth-form card">
                     <div class="card-body  bg-transparent">
                         <form action="#" method="POST">
+                        <?php
+                        if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['telp']) && isset($_POST['nama']) && isset($_POST['avatar']) && is_numeric($_POST['avatar'])){
+                            require 'modules/models.php';
+                            require 'modules/avatar.php';
+                                try
+                                {
+                                    $user = new Masyarakat($_POST['username'], $_POST['password']);
+                                    $user->daftar($_POST['nama'], $_POST['nik'], $_POST['telp'], getAvatarFileByIndex(intval($_POST['avatar'])));
+                                    header('Location: login.php');
+                                    echo '<div class="alert alert-info" role="alert">
+                                    Akun berhasil didaftarkan!
+                                </div>';
+                                } catch (penggunaTelahTerdaftar | IsNotNumeric | Exception $e){
+                                    echo '<div class="alert alert-danger" role="alert">';
+                                    echo  $e->getMessage();
+                                    echo '</div>';
+                                }
+                        }
+
+                        ?>
                             <div class="row">
                                 <div class="col-12 mb-3"><label class="form-label">Nik</label><input name="nik" type="text" class="form-control" value="<?php echo isset($_POST['nik'])?$_POST['nik']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Nama</label><input name="nama" type="text" class="form-control" value="<?php echo isset($_POST['nama'])?$_POST['nama']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Username</label><input name="username" type="text" class="form-control" value="<?php echo isset($_POST['username'])?$_POST['username']:'';?>"></div>
-                                <div class="col-12 mb-3"><label class="form-label">Telp</label><input name="telp" type="text" class="form-control" value="<?php echo isset($_POST['telp'])?$_POST['telp']:'';?>"></div>
+                                <div class="col-12 mb-3"><label class="form-label">Telepon</label><input name="telp" type="text" class="form-control" value="<?php echo isset($_POST['telp'])?$_POST['telp']:'';?>"></div>
                                 <div class="col-12 mb-3"><label class="form-label">Password</label><input name="password" type="password" class="form-control" value="<?php echo isset($_POST['password'])?$_POST['password']:'';?>"></div>
                                 <input type="hidden" value="1" name="avatar" id="avt">
                                 <div class="col-12 mb-3">
@@ -144,7 +144,8 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
                             <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Daftar</button></div>
                         </form>
                         <div class="text-center">
-                            <p class="mt-3 mb-0"><a class="text-primary" href="login.php">Login</a>?</p>
+                        <p class="mt-3 mb-0">Sudah punya akun? <a class="text-primary" href="daftar.php">Login</a>
+                        </p>
                         </div>
                     </div>
                 </div>
@@ -181,7 +182,10 @@ if(isset($_POST['nik']) && isset($_POST['username']) && isset($_POST['password']
         background: inherit;
         backdrop-filter: blur(10px);
     }
-        
+    .alert {
+        backdrop-filter: blur(10px);
+        opacity: 76%;
+    }
 </style>
 <script src="js/scripts.js"></script>
 
