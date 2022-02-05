@@ -84,6 +84,10 @@ include 'components/header.php';
     </div>
 </div>
 <style>
+    .g-aduan {
+        object-fit: cover;
+        height: 200px;
+    }
 </style>
 <?php
 include 'components/footer.php';

@@ -220,7 +220,7 @@ function escapeHtml(unsafe)
       <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12 d-xs-flex justify-content-center" id="i${id}" style="animation: fadeInDown;animation-duration: 1s;">
                     <div class="card items">
                         <div class="card-body">
-                            <div class="items-img position-relative"><img src="../gambar-aduan/${image_url}" width="100%" class="img-fluid rounded mb-3" alt=""><img src="${avatar}" class="creator" width="50" alt=""></div>
+                            <div class="items-img position-relative"><img src="../gambar-aduan/${image_url}" width="100%" class="g-aduan img-fluid rounded mb-3" alt=""><img src="${avatar}" class="creator" width="50" alt=""></div>
                             <h4 class="card-title">${author}</h4>
                             <p>${isi.length > 29 ?buatSelengkapnya(isi, id):isi}</p>
                             <div class="d-flex justify-content-between">
