@@ -19,9 +19,9 @@ function lihatTanggapan(id){
     const btn2 = document.getElementById('btn2');
     btn1.removeAttribute('data-bs-dismiss');
     btn1.innerHTML = '<i class="ri-arrow-left-s-line"></i> Kembali';
-    btn1.setAttribute('onclick', `lihatPengaduan(${id})`);
+    btn1.setAttribute('onclick', `lihatPengaduan('${id}')`);
     btn2.innerHTML = '<i class="ri-check-double-line"></i> Selesai';
-    btn2.setAttribute('onclick', `selesai(${id});`);
+    btn2.setAttribute('onclick', `selesai('${id}');`);
 }
 
 
@@ -39,7 +39,7 @@ function tulisTanggapan(ids){
 
 /**
  * 
- * @param {Number} id 
+ * @param {String} id 
  */
 function lihatPengaduan(id){
     document.getElementById('isiAduan').style.display = ''
@@ -53,18 +53,18 @@ function lihatPengaduan(id){
         btn1.removeAttribute('onclick');
         btn1.innerHTML = 'Tutup';
         btn2.innerHTML = 'Tanggapan'
-        btn2.setAttribute('onclick', `lihatTanggapan(${id})`);
+        btn2.setAttribute('onclick', `lihatTanggapan('${id}')`);
     }else if(dataPengaduan[id].status === 'selesai'){
         btn1.setAttribute('data-bs-dismiss','modal');
         btn1.removeAttribute('onclick');
         btn1.innerHTML = 'Tutup';
         btn2.innerHTML = 'Tanggapan'
-        btn2.setAttribute('onclick', `lihatTanggapan(${id})`);
+        btn2.setAttribute('onclick', `lihatTanggapan('${id}')`);
     }else if(dataPengaduan[id].status === '0'){
         btn1.setAttribute('data-bs-dismiss','modal');
         btn1.innerHTML = 'Tutup';
         btn2.innerHTML = 'Tanggapi';
-        btn2.setAttribute('onclick', `tulisTanggapan(${id})`);
+        btn2.setAttribute('onclick', `tulisTanggapan('${id}')`);
     }
 }
 
@@ -88,8 +88,10 @@ function kirimTanggapan(id){
             document.getElementById('isiTanggapan').setAttribute('readonly', '');
             dataPengaduan[id] = json.data;
             EditStatusByID(id, json.data.status);
+            lihatPengaduan(id)
             Swal.fire({
                 position: 'top-end',
+                background:localStorage.theme?'#1D1933':'white',
                 icon: 'success',
                 title: 'Berhasil Ditanggapi',
                 showConfirmButton: false,
@@ -166,7 +168,10 @@ function selesai(id){
     })
 }
 
-
+/**
+ * @param {String} unsafe
+ * @returns {String}
+ */
 function escapeHtml(unsafe)
 {
     return unsafe
@@ -176,7 +181,12 @@ function escapeHtml(unsafe)
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
  }
-
+ 
+/**
+ * 
+ * @param {String} safe 
+ * @returns {String}
+ */
  function unescapeHtml(safe)
 {
     return safe
@@ -189,14 +199,14 @@ function escapeHtml(unsafe)
 
   /**
    * 
-   * @param {string} text
+   * @param {String} text
    * @param {Int8Array} id
-   * @returns {string}
+   * @returns {String}
    */
   function buatSelengkapnya(text, id)
   {
       if((text.match(/\n/g) || []).length || text.length > 29){
-          return `${escapeHtml(text.slice(0, 29))}<span>....</span><a data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="btnTanggapan(${id});" style="color: 6F4EF2;">baca selengkapnya</a>`;
+          return `${escapeHtml(text.slice(0, 29))}<span>....</span><a data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="btnTanggapan('${id}');" style="color: 6F4EF2;">baca selengkapnya</a>`;
       }
       return escapeHtml(text);
   }
@@ -205,12 +215,12 @@ function escapeHtml(unsafe)
 
   /**
    * 
-   * @param {string} image_url 
-   * @param {string} tanggal 
-   * @param {string} isi 
-   * @param {string} status 
-   * @param {number} id
-   * @returns {string}
+   * @param {String} image_url 
+   * @param {String} tanggal 
+   * @param {String} isi 
+   * @param {String} status 
+   * @param {String} id
+   * @returns {String}
    */
   function createCard(image_url, tanggal, isi, status, id, avatar, author)
   {
@@ -232,7 +242,7 @@ function escapeHtml(unsafe)
                                     <p class="mb-2">Status : <strong class="text-primary" id="status-${id}">${status}</strong></p>
                                 </div>
                             </div>
-                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="T${id}" onclick="btnTanggapan(${id});">
+                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="T${id}" onclick="btnTanggapan('${id}');">
                                                 ${status === "0"?'<i class="ri-chat-new-line">  </i>Tanggapi':'<i class="ri-chat-check-line">  </i>Tanggapan'}
                                             </a>
                             <a onclick="Hapus('${id}');" id="button2btn" class="btn btn-secondary">
@@ -249,7 +259,7 @@ function escapeHtml(unsafe)
   }
 
 /**
- * @param {number} num
+ * @param {Number} num
  */
 function monthNum2Str(num){
     const month = [

@@ -53,7 +53,7 @@ $(document).ready(()=>{
 })
 
 /**
- * @param {number} num
+ * @param {Number} num
  */
 function monthNum2Str(num){
     const month = [
@@ -66,7 +66,7 @@ function monthNum2Str(num){
 }
 /**
  * 
- * @returns {string}
+ * @returns {String}
  */
 
 function cdate(){
@@ -76,7 +76,7 @@ function cdate(){
 
 /**
  * 
- * @param {string} id 
+ * @param {String} id 
  */
 function removeCardById(id){
     Array.from(document.getElementsByClassName('col-xxl-3'))
@@ -106,9 +106,9 @@ function escapeHtml(unsafe)
 
   /**
    * 
-   * @param {string} text
+   * @param {String} text
    * @param {Int8Array} id
-   * @returns {string}
+   * @returns {String}
    */
   function buatSelengkapnya(text, id)
   {
@@ -122,12 +122,12 @@ function escapeHtml(unsafe)
 
   /**
    * 
-   * @param {string} image_url 
-   * @param {string} tanggal 
-   * @param {string} isi 
-   * @param {string} status 
-   * @param {number} id
-   * @returns {string}
+   * @param {String} image_url 
+   * @param {String} tanggal 
+   * @param {String} isi 
+   * @param {String} status 
+   * @param {String} id
+   * @returns {String}
    */
   function createCard(image_url, tanggal, isi, status, id)
   {

@@ -92,11 +92,11 @@ try{
     </div>
 </div>
     <div class="sidebar">
-    <div class="brand-logo"><a class="full-logo" href="index.html"><img src="images/logoi.png" alt="" width="30"></a></div>
+    <div class="brand-logo"><a class="full-logo" href="#"><img src="images/logoi.png" alt="" width="30"></a></div>
     <div class="menu active">
         <ul class="show">
             <li class="active">
-                <a href="index-2.html" class="active">
+                <a href="dashboard.php" class="active">
                 <span><i class="ri-layout-grid-fill"></i></span>
                     <span class="nav-text">Dashboard</span>
                 </a>
