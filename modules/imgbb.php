@@ -20,7 +20,7 @@
             "image" => $bs4
         ]));
         $result = json_decode(curl_exec($http));
-        if(isset($result->success)) { )
+        if(isset($result->success)) { 
             return $result->data->display_url;
         }
     }
