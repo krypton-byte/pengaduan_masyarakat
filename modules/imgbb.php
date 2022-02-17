@@ -20,7 +20,7 @@
             "image" => $bs4
         ]));
         $result = json_decode(curl_exec($http));
-        if(isset($result->success)) { // array_key_exist ada kesalah di php8, sebagai gantinya menggnakan fungsi isset()
+        if(isset($result->success)) { )
             return $result->data->display_url;
         }
     }
